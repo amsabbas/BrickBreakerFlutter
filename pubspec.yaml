@@ -1,0 +1,42 @@
+name: brick_breaker_game
+description: A new Flutter application.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.15.0 <3.0.0"
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  get: ^4.6.1
+  shared_preferences: ^2.0.9
+  get_it: ^7.2.0
+
+
+cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+  flutter_lints: ^1.0.0
+
+
+flutter:
+
+
+  uses-material-design: true
+
+  fonts:
+     - family: Debug
+       fonts:
+         - asset: assets/fonts/debug.otf
+
+
