@@ -1,6 +1,5 @@
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
-import 'package:brick_breaker_game/base/utils/shared_preference.dart';
 import 'package:brick_breaker_game/base/widget/empty_app_bar.dart';
 import 'package:brick_breaker_game/controller/game_controller.dart';
 import 'package:brick_breaker_game/screen/game_screen.dart';
@@ -21,6 +20,7 @@ class _LevelScreenState extends State<LevelScreen> {
   void initState() {
     super.initState();
     _mainController = Get.put(getIt<MainController>());
+    _mainController.loadLevel();
   }
 
   @override

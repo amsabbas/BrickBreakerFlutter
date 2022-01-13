@@ -10,6 +10,7 @@ Future<void> initGeneralInjection() async {
     await sharedPrefs.init();
     return sharedPrefs;
   });
-
-  getIt.registerFactory<MainController>(() => MainController());
+  await GetIt.instance.isReady<SharedPrefs>().then((_) async {
+    getIt.registerFactory<MainController>(() => MainController());
+  });
 }

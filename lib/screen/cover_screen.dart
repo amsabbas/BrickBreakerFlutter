@@ -1,7 +1,5 @@
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:brick_breaker_game/base/widget/empty_app_bar.dart';
-import 'package:brick_breaker_game/screen/game_screen.dart';
-import 'package:brick_breaker_game/widget/ball.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -52,6 +50,6 @@ class CoverScreen extends StatelessWidget {
   }
 
   void startGame() {
-    Get.to(() => LevelScreen());
+    Get.to(() => const LevelScreen());
   }
 }

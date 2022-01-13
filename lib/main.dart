@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -17,11 +15,10 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
   changeStatusBarColor();
-  initGeneralInjection();
-  GetIt.instance.isReady<SharedPrefs>().then((_) async {
-    runApp(const MyApp());
-  });
+  await initGeneralInjection();
+  runApp(const MyApp());
 }
 
 void changeStatusBarColor() {
