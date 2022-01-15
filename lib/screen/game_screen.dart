@@ -125,7 +125,7 @@ class _GameScreenState extends State<GameScreen> {
                                         brickWidth: _mainController.brickWidth,
                                         brickHeight:
                                             _mainController.brickHeight,
-                                        brickBroken: _mainController.bricks[i]
+                                        brickBrokenHits: _mainController.bricks[i]
                                             [2],
                                       ))
                                   .toList()),

@@ -3,5 +3,6 @@
   "column": 3,
   "matrix": [[1, 1,1],[1, 0, 1],[1, 1, 1]],
   "widthGap": 0.1,
-  "heightGap": 0.1
+  "heightGap": 0.1,
+  "brickBrokenHits" : 1
 }

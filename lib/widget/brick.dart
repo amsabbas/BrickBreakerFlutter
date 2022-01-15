@@ -6,7 +6,7 @@ class Brick extends StatelessWidget {
   final double brickY;
   final double brickWidth;
   final double brickHeight;
-  final bool brickBroken;
+  final int brickBrokenHits;
 
   const Brick(
       {Key? key,
@@ -14,12 +14,12 @@ class Brick extends StatelessWidget {
       required this.brickY,
       required this.brickWidth,
       required this.brickHeight,
-      required this.brickBroken})
+      required this.brickBrokenHits})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return brickBroken
+    return brickBrokenHits == 0
         ? Container()
         : Container(
             alignment:
@@ -27,7 +27,7 @@ class Brick extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(3),
               child: Container(
-                color: AppColors.blueLight,
+                color: brickBrokenHits == 1 ? AppColors.blueLight100 : AppColors.blueLight,
                 height: MediaQuery.of(context).size.height * brickHeight / 2,
                 width: MediaQuery.of(context).size.width * brickWidth / 2,
               ),

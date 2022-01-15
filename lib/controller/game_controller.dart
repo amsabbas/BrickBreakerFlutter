@@ -11,36 +11,38 @@ import 'package:get/get.dart';
 enum Direction { up, down, left, right, none }
 
 class MainController extends GetxController {
+  int _refreshDurationInMilliseconds = 8;
+  bool _isGameStarted = false;
+
   RxInt level = 1.obs;
   RxInt currentLevel = 1.obs;
   late SharedPrefs _sharedPrefs;
 
   late double brickWidth;
   late double brickHeight;
-  late double brickGapWidth;
-  late double brickGapHeight;
-  late int numberOfBrickInRow;
-  late int numberOfBrickInColumn;
-  late double firstBrickY;
-  late double firstBrickX;
-  late double wallGap;
+  late double _brickGapWidth;
+  late double _brickGapHeight;
+  late int _numberOfBrickInRow;
+  late int _numberOfBrickInColumn;
+  late double _firstBrickY;
+  late double _firstBrickX;
+  late double _wallGap;
+  late int _brickBrokenHits;
   RxBool allBricksBroken = false.obs;
   RxList bricks = [].obs;
 
   RxDouble ballX = 0.0.obs;
   RxDouble ballY = 0.0.obs;
   RxBool ballShown = true.obs;
-  double ballXIncrements = 0.01;
-  double ballYIncrements = 0.01;
-  var ballYDirection = Direction.down;
-  var ballXDirection = Direction.left;
+  final double _ballXIncrements = 0.01;
+  final double _ballYIncrements = 0.01;
+  Direction _ballYDirection = Direction.down;
+  Direction _ballXDirection = Direction.left;
 
   Rx<ValueNotifier<double>> playerX = ValueNotifier(-0.2).obs;
   RxBool playerShown = true.obs;
   RxBool playerDead = false.obs;
-
   double playerWidth = 0.5;
-  bool isGameStarted = false;
 
   @override
   void onInit() {
@@ -54,6 +56,9 @@ class MainController extends GetxController {
 
   void initLevel(int level) {
     currentLevel.value = level;
+    if (currentLevel > 10) {
+      _refreshDurationInMilliseconds = 7;
+    }
     _initBricks();
     resetGame();
   }
@@ -71,36 +76,39 @@ class MainController extends GetxController {
     final String level = await rootBundle
         .loadString("assets/levels/" + currentLevel.value.toString() + ".json");
     final jsonResult = jsonDecode(level);
-    final gameConfiguration = GameConfiguration(
-        row: jsonResult['row'],
-        column: jsonResult['column'],
-        matrix: jsonResult['matrix'],
-        widthGap: jsonResult['widthGap'],
-        heightGap: jsonResult['heightGap']);
+    final brickConfiguration = BrickConfiguration(
+      row: jsonResult['row'],
+      column: jsonResult['column'],
+      matrix: jsonResult['matrix'],
+      widthGap: jsonResult['widthGap'],
+      heightGap: jsonResult['heightGap'],
+      brickBrokenHits: jsonResult['brickBrokenHits'],
+    );
 
     brickWidth = 0.4;
     brickHeight = 0.07;
-    numberOfBrickInRow = gameConfiguration.row;
-    numberOfBrickInColumn = gameConfiguration.column;
-    brickGapWidth = gameConfiguration.widthGap;
-    brickGapHeight = gameConfiguration.heightGap;
+    _brickBrokenHits = brickConfiguration.brickBrokenHits;
+    _numberOfBrickInRow = brickConfiguration.row;
+    _numberOfBrickInColumn = brickConfiguration.column;
+    _brickGapWidth = brickConfiguration.widthGap;
+    _brickGapHeight = brickConfiguration.heightGap;
 
-    wallGap = 0.5 *
+    _wallGap = 0.5 *
         (2 -
-            numberOfBrickInRow * brickWidth -
-            (numberOfBrickInRow - 1) * brickGapWidth);
-    firstBrickY = -0.7;
-    firstBrickX = -1 + wallGap;
+            _numberOfBrickInRow * brickWidth -
+            (_numberOfBrickInRow - 1) * _brickGapWidth);
+    _firstBrickY = -0.7;
+    _firstBrickX = -1 + _wallGap;
 
     bricks.clear();
-    for (int i = 0; i < numberOfBrickInRow; i++) {
-      for (int j = 0; j < numberOfBrickInColumn; j++) {
-        int matrix = gameConfiguration.matrix[i][j];
+    for (int i = 0; i < _numberOfBrickInRow; i++) {
+      for (int j = 0; j < _numberOfBrickInColumn; j++) {
+        int matrix = brickConfiguration.matrix[i][j];
         if (matrix != 0) {
           bricks.add([
-            firstBrickX + i * (brickWidth + brickGapWidth),
-            firstBrickY + j * (brickHeight + brickGapHeight),
-            false
+            _firstBrickX + i * (brickWidth + _brickGapWidth),
+            _firstBrickY + j * (brickHeight + _brickGapHeight),
+            _brickBrokenHits
           ]);
         }
       }
@@ -109,9 +117,10 @@ class MainController extends GetxController {
   }
 
   void startGame() {
-    if (!isGameStarted) {
-      Timer.periodic(const Duration(milliseconds: 8), (timer) {
-        isGameStarted = true;
+    if (!_isGameStarted) {
+      Timer.periodic(Duration(milliseconds: _refreshDurationInMilliseconds),
+          (timer) {
+        _isGameStarted = true;
         _updateDirection();
         _moveBall();
         _checkPlayerDead(timer);
@@ -130,9 +139,9 @@ class MainController extends GetxController {
 
   void resetGame() {
     _initBricks();
-    ballYDirection = Direction.down;
-    ballXDirection = Direction.left;
-    isGameStarted = false;
+    _ballYDirection = Direction.down;
+    _ballXDirection = Direction.left;
+    _isGameStarted = false;
     playerX.value.value = (-0.2);
 
     ballX.value = 0.0;
@@ -148,7 +157,7 @@ class MainController extends GetxController {
     allBricksBroken.value = false;
 
     for (int i = 0; i < bricks.length; i++) {
-      bricks[i][2] = false;
+      bricks[i][2] = 1;
     }
     bricks.refresh();
   }
@@ -159,8 +168,8 @@ class MainController extends GetxController {
           ballX <= bricks[i][0] + brickWidth &&
           ballY <= bricks[i][1] + brickHeight &&
           ballY >= bricks[i][1] &&
-          bricks[i][2] == false) {
-        bricks[i][2] = true;
+          bricks[i][2] > 0) {
+        bricks[i][2]--;
 
         double leftSideDist = (bricks[i][0] - ballX.value).abs();
         double rightSideDist = (bricks[i][0] + brickWidth - ballX.value).abs();
@@ -172,16 +181,16 @@ class MainController extends GetxController {
             _findMin(leftSideDist, rightSideDist, topSideDist, bottomSideDist);
         switch (min) {
           case Direction.left:
-            ballXDirection = Direction.left;
+            _ballXDirection = Direction.left;
             break;
           case Direction.right:
-            ballXDirection = Direction.right;
+            _ballXDirection = Direction.right;
             break;
           case Direction.up:
-            ballYDirection = Direction.up;
+            _ballYDirection = Direction.up;
             break;
           case Direction.down:
-            ballYDirection = Direction.down;
+            _ballYDirection = Direction.down;
             break;
           case Direction.none:
             break;
@@ -194,7 +203,7 @@ class MainController extends GetxController {
   void _checkAllBricksBroken(Timer timer) async {
     bool allBroken = true;
     for (int i = 0; i < bricks.length; i++) {
-      if (bricks[i][2] == false) {
+      if (bricks[i][2] > 0) {
         allBroken = false;
       }
     }
@@ -231,29 +240,29 @@ class MainController extends GetxController {
     if (ballY >= 0.9 &&
         ballX >= playerX.value.value &&
         ballX <= playerX.value.value + playerWidth) {
-      ballYDirection = Direction.up;
+      _ballYDirection = Direction.up;
     } else if (ballY <= -1) {
-      ballYDirection = Direction.down;
+      _ballYDirection = Direction.down;
     }
 
     if (ballX >= 1) {
-      ballXDirection = Direction.left;
+      _ballXDirection = Direction.left;
     } else if (ballX <= -1) {
-      ballXDirection = Direction.right;
+      _ballXDirection = Direction.right;
     }
   }
 
   void _moveBall() {
-    if (ballXDirection == Direction.left) {
-      ballX.value -= ballXIncrements;
-    } else if (ballXDirection == Direction.right) {
-      ballX.value += ballXIncrements;
+    if (_ballXDirection == Direction.left) {
+      ballX.value -= _ballXIncrements;
+    } else if (_ballXDirection == Direction.right) {
+      ballX.value += _ballXIncrements;
     }
 
-    if (ballYDirection == Direction.down) {
-      ballY.value += ballYIncrements;
-    } else if (ballYDirection == Direction.up) {
-      ballY.value -= ballYIncrements;
+    if (_ballYDirection == Direction.down) {
+      ballY.value += _ballYIncrements;
+    } else if (_ballYDirection == Direction.up) {
+      ballY.value -= _ballYIncrements;
     }
   }
 
