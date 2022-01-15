@@ -1,0 +1,7 @@
+{
+"row": 2,
+"column": 3,
+"matrix": [[1, 1, 1],[1, 1, 1]],
+"widthGap": 0.03,
+"heightGap": 0.02
+}

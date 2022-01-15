@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:brick_breaker_game/base/utils/shared_preference.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import 'package:brick_breaker_game/model/game_configuration.dart';
 
 import 'package:get/get.dart';
 
@@ -13,7 +17,8 @@ class MainController extends GetxController {
 
   late double brickWidth;
   late double brickHeight;
-  late double brickGap;
+  late double brickGapWidth;
+  late double brickGapHeight;
   late int numberOfBrickInRow;
   late int numberOfBrickInColumn;
   late double firstBrickY;
@@ -30,9 +35,10 @@ class MainController extends GetxController {
   var ballYDirection = Direction.down;
   var ballXDirection = Direction.left;
 
-  RxDouble playerX = (-0.2).obs;
+  Rx<ValueNotifier<double>> playerX = ValueNotifier(-0.2).obs;
   RxBool playerShown = true.obs;
   RxBool playerDead = false.obs;
+
   double playerWidth = 0.5;
   bool isGameStarted = false;
 
@@ -61,32 +67,42 @@ class MainController extends GetxController {
     }
   }
 
-  void _initBricks() {
+  void _initBricks() async {
+    final String level = await rootBundle
+        .loadString("assets/levels/" + currentLevel.value.toString() + ".json");
+    final jsonResult = jsonDecode(level);
+    final gameConfiguration = GameConfiguration(
+        row: jsonResult['row'],
+        column: jsonResult['column'],
+        matrix: jsonResult['matrix'],
+        widthGap: jsonResult['widthGap'],
+        heightGap: jsonResult['heightGap']);
+
     brickWidth = 0.4;
     brickHeight = 0.07;
-    brickGap = 0.02;
-    numberOfBrickInRow = currentLevel % 2 == 0
-        ? ((currentLevel * 3)).ceil() % 4 + 1
-        : ((currentLevel * 2)).ceil() % 5 + 1;
+    numberOfBrickInRow = gameConfiguration.row;
+    numberOfBrickInColumn = gameConfiguration.column;
+    brickGapWidth = gameConfiguration.widthGap;
+    brickGapHeight = gameConfiguration.heightGap;
 
-    numberOfBrickInColumn = currentLevel % 2 == 0
-        ? ((currentLevel * 3)).ceil() % 4 + 1
-        : ((currentLevel * 2)).ceil() % 4 + 1;
     wallGap = 0.5 *
         (2 -
             numberOfBrickInRow * brickWidth -
-            (numberOfBrickInRow - 1) * brickGap);
+            (numberOfBrickInRow - 1) * brickGapWidth);
     firstBrickY = -0.7;
     firstBrickX = -1 + wallGap;
 
     bricks.clear();
     for (int i = 0; i < numberOfBrickInRow; i++) {
       for (int j = 0; j < numberOfBrickInColumn; j++) {
-        bricks.add([
-          firstBrickX + i * (brickWidth + brickGap),
-          firstBrickY + j * (brickHeight + brickGap),
-          false
-        ]);
+        int matrix = gameConfiguration.matrix[i][j];
+        if (matrix != 0) {
+          bricks.add([
+            firstBrickX + i * (brickWidth + brickGapWidth),
+            firstBrickY + j * (brickHeight + brickGapHeight),
+            false
+          ]);
+        }
       }
     }
     bricks.refresh();
@@ -94,7 +110,7 @@ class MainController extends GetxController {
 
   void startGame() {
     if (!isGameStarted) {
-      Timer.periodic(const Duration(milliseconds: 10), (timer) {
+      Timer.periodic(const Duration(milliseconds: 8), (timer) {
         isGameStarted = true;
         _updateDirection();
         _moveBall();
@@ -117,7 +133,7 @@ class MainController extends GetxController {
     ballYDirection = Direction.down;
     ballXDirection = Direction.left;
     isGameStarted = false;
-    playerX.value = (-0.2);
+    playerX.value.value = (-0.2);
 
     ballX.value = 0.0;
 
@@ -213,8 +229,8 @@ class MainController extends GetxController {
 
   void _updateDirection() {
     if (ballY >= 0.9 &&
-        ballX >= playerX.value &&
-        ballX <= playerX.value + playerWidth) {
+        ballX >= playerX.value.value &&
+        ballX <= playerX.value.value + playerWidth) {
       ballYDirection = Direction.up;
     } else if (ballY <= -1) {
       ballYDirection = Direction.down;
@@ -239,23 +255,18 @@ class MainController extends GetxController {
     } else if (ballYDirection == Direction.up) {
       ballY.value -= ballYIncrements;
     }
-
-    ballX.refresh();
-    ballY.refresh();
   }
 
   void movePlayerLeft() {
-    if (!(playerX.value - 0.1 < -1)) {
-      playerX.value -= 0.1;
+    if (!(playerX.value.value - 0.1 < -1)) {
+      playerX.value.value -= 0.1;
     }
-    playerX.refresh();
   }
 
   void movePlayerRight() {
-    if (!(playerX.value + playerWidth >= 1)) {
-      playerX.value += (0.1);
+    if (!(playerX.value.value + playerWidth >= 1)) {
+      playerX.value.value += (0.1);
     }
-    playerX.refresh();
   }
 
   @override
@@ -269,5 +280,7 @@ class MainController extends GetxController {
     ballShown.close();
     playerX.close();
     playerShown.close();
+    playerDead.close();
+    allBricksBroken.close();
   }
 }

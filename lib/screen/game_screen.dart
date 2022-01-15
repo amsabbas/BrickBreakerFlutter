@@ -51,20 +51,26 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void showCongratulationsScreen() async {
-    final data = await Get.dialog(const GameCongratulationsScreen(),
-        barrierDismissible: false,
-        barrierColor: Colors.black.withOpacity(0.05));
-    if (data != null && data) {
-      _mainController.resetGame();
+    if (Get.currentRoute == "/GameScreen") {
+      // dispose worker take some time
+      final data = await Get.dialog(const GameCongratulationsScreen(),
+          barrierDismissible: false,
+          barrierColor: Colors.black.withOpacity(0.04));
+      if (data != null && data) {
+        _mainController.resetGame();
+      }
     }
   }
 
   void showGameOverScreen() async {
-    final data = await Get.dialog(const GameOverScreen(),
-        barrierDismissible: false,
-        barrierColor: Colors.black.withOpacity(0.05));
-    if (data != null && data) {
-      _mainController.resetGame();
+    if (Get.currentRoute == "/GameScreen") {
+      // dispose worker take some time
+      final data = await Get.dialog(const GameOverScreen(),
+          barrierDismissible: false,
+          barrierColor: Colors.black.withOpacity(0.04));
+      if (data != null && data) {
+        _mainController.resetGame();
+      }
     }
   }
 
@@ -86,12 +92,12 @@ class _GameScreenState extends State<GameScreen> {
           child: GetX<MainController>(
               init: _mainController, //here
               builder: (controller) {
-                return  Column(
+                return Column(
                   children: [
                     AppBar(
                       elevation: 1,
-                      title: Obx(() =>
-                          Text("LEVEL " + _mainController.currentLevel.value.toString())),
+                      title: Obx(() => Text("LEVEL " +
+                          _mainController.currentLevel.value.toString())),
                     ),
                     Expanded(
                       child: Stack(
@@ -101,19 +107,26 @@ class _GameScreenState extends State<GameScreen> {
                             ballY: _mainController.ballY.value,
                             ballShown: _mainController.ballShown.value,
                           ),
-                          Player(
-                            playerShown: _mainController.playerShown.value,
-                            playerWidth: _mainController.playerWidth,
-                            playerX: _mainController.playerX.value,
-                          ),
+                          AnimatedBuilder(
+                              animation: _mainController.playerX.value,
+                              builder: (context, child) {
+                                return Player(
+                                  playerShown:
+                                      _mainController.playerShown.value,
+                                  playerWidth: _mainController.playerWidth,
+                                  playerX: _mainController.playerX.value.value,
+                                );
+                              }),
                           Stack(
                               children: _mainController.bricks
                                   .mapIndexed((i, e) => Brick(
                                         brickX: _mainController.bricks[i][0],
                                         brickY: _mainController.bricks[i][1],
                                         brickWidth: _mainController.brickWidth,
-                                        brickHeight: _mainController.brickHeight,
-                                        brickBroken: _mainController.bricks[i][2],
+                                        brickHeight:
+                                            _mainController.brickHeight,
+                                        brickBroken: _mainController.bricks[i]
+                                            [2],
                                       ))
                                   .toList()),
                         ],

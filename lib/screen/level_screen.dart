@@ -82,7 +82,7 @@ class _LevelScreenState extends State<LevelScreen> {
                               ),
                             ),
                           ),
-                          itemCount: 500,
+                          itemCount: 30,
                         );
                       })),
             ],

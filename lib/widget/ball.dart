@@ -5,7 +5,8 @@ class Ball extends StatelessWidget {
   final double ballX;
   final double ballY;
   final bool ballShown;
-
+  final double ballWidth = 15;
+  final double ballHeight = 15;
   const Ball(
       {Key? key,
       required this.ballX,
@@ -19,8 +20,8 @@ class Ball extends StatelessWidget {
         ? Container(
             alignment: Alignment(ballX, ballY),
             child: Container(
-              width: 15,
-              height: 15,
+              width: ballWidth,
+              height: ballHeight,
               decoration: const BoxDecoration(
                   color: AppColors.blueLight, shape: BoxShape.circle),
             ),

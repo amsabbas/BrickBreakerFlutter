@@ -1,9 +1,7 @@
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_it/get_it.dart';
 import 'base/style/theme.dart';
-import 'base/utils/shared_preference.dart';
 import 'screen/cover_screen.dart';
 
 import 'package:flutter/material.dart';
