@@ -5,6 +5,8 @@ class BrickConfiguration {
   double widthGap;
   double heightGap;
   int brickBrokenHits;
+  double brickWidth;
+  double brickHeight;
 
   BrickConfiguration(
       {required this.row,
@@ -12,5 +14,7 @@ class BrickConfiguration {
       required this.matrix,
       required this.widthGap,
       required this.heightGap,
-      required this.brickBrokenHits});
+      required this.brickBrokenHits,
+      required this.brickHeight,
+      required this.brickWidth});
 }

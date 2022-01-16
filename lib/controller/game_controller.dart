@@ -89,10 +89,12 @@ class MainController extends GetxController {
       widthGap: jsonResult['widthGap'],
       heightGap: jsonResult['heightGap'],
       brickBrokenHits: jsonResult['brickBrokenHits'],
+      brickWidth: jsonResult['brickWidth'],
+      brickHeight: jsonResult['brickHeight'],
     );
 
-    brickWidth = 0.4;
-    brickHeight = 0.07;
+    brickWidth = brickConfiguration.brickWidth;
+    brickHeight = brickConfiguration.brickHeight;
     _brickBrokenHits = brickConfiguration.brickBrokenHits;
     _numberOfBrickInRow = brickConfiguration.row;
     _numberOfBrickInColumn = brickConfiguration.column;
