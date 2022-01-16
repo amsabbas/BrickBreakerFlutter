@@ -1,5 +1,6 @@
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:brick_breaker_game/controller/game_controller.dart';
+import 'package:brick_breaker_game/widget/award.dart';
 import 'package:collection/collection.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:get/get.dart';
@@ -102,6 +103,12 @@ class _GameScreenState extends State<GameScreen> {
                     Expanded(
                       child: Stack(
                         children: [
+                          Award(
+                            awardX: _mainController.awardX.value,
+                            awardY: _mainController.awardY.value,
+                            awardShown: _mainController.awardShown.value,
+                          ),
+
                           Ball(
                             ballX: _mainController.ballX.value,
                             ballY: _mainController.ballY.value,
@@ -125,8 +132,8 @@ class _GameScreenState extends State<GameScreen> {
                                         brickWidth: _mainController.brickWidth,
                                         brickHeight:
                                             _mainController.brickHeight,
-                                        brickBrokenHits: _mainController.bricks[i]
-                                            [2],
+                                        brickBrokenHits:
+                                            _mainController.bricks[i][2],
                                       ))
                                   .toList()),
                         ],

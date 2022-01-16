@@ -4,5 +4,5 @@
   "matrix": [[1, 0, 0],[1, 1, 1],[1, 0, 0]],
   "widthGap": 0.2,
   "heightGap": 0.02,
-  "brickBrokenHits" : 1
+  "brickBrokenHits" : 2
 }

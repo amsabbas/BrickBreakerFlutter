@@ -44,6 +44,12 @@ class MainController extends GetxController {
   RxBool playerDead = false.obs;
   double playerWidth = 0.5;
 
+  RxDouble awardX = 0.0.obs;
+  RxDouble awardY = 1.0.obs;
+  final double _awardYIncrements = 0.01;
+  RxBool awardShown = false.obs;
+  int brickAwardTime = 0;
+
   @override
   void onInit() {
     super.onInit();
@@ -123,6 +129,8 @@ class MainController extends GetxController {
         _isGameStarted = true;
         _updateDirection();
         _moveBall();
+        _checkForAward();
+        _updateAward();
         _checkPlayerDead(timer);
         _checkBricksBroken(timer);
       });
@@ -143,23 +151,48 @@ class MainController extends GetxController {
     _ballXDirection = Direction.left;
     _isGameStarted = false;
     playerX.value.value = (-0.2);
-
     ballX.value = 0.0;
-
     ballY.value = 0.0;
-
     playerShown.value = true;
-
     ballShown.value = true;
-
     playerDead.value = false;
-
     allBricksBroken.value = false;
 
     for (int i = 0; i < bricks.length; i++) {
       bricks[i][2] = 1;
     }
     bricks.refresh();
+  }
+
+  void _checkForAward() {
+    if (awardY.value >= 0.9 &&
+        awardX.value >= playerX.value.value &&
+        awardX.value <= playerX.value.value + playerWidth &&
+        awardShown.value) {
+      playerWidth = 0.9;
+      awardX.value = 0.0;
+      awardY.value = 0.0;
+      awardShown.value = false;
+      Future.delayed(const Duration(seconds: 15), () {
+        playerWidth = 0.5;
+      });
+    }
+  }
+
+  void _addAward(double x, double y) {
+    if (awardShown.value == false) {
+      awardX.value = x;
+      awardY.value = y;
+      awardShown.value = true;
+    }
+  }
+
+  void _updateAward() {
+    if (awardY >= 0.9) {
+      awardShown.value = false;
+      return;
+    }
+    awardY.value += _awardYIncrements;
   }
 
   void _checkBricksBroken(Timer timer) {
@@ -170,6 +203,14 @@ class MainController extends GetxController {
           ballY >= bricks[i][1] &&
           bricks[i][2] > 0) {
         bricks[i][2]--;
+
+        if (brickAwardTime > 0) {
+          int currentTime = DateTime.now().second;
+          if (currentTime - brickAwardTime <= 1) {
+            _addAward(ballX.value, ballY.value);
+          }
+        }
+        brickAwardTime = DateTime.now().second;
 
         double leftSideDist = (bricks[i][0] - ballX.value).abs();
         double rightSideDist = (bricks[i][0] + brickWidth - ballX.value).abs();
