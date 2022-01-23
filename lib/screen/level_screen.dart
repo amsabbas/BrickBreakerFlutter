@@ -1,4 +1,6 @@
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
+import 'package:brick_breaker_game/base/language/language.dart';
+import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:brick_breaker_game/base/utils/constants.dart';
 import 'package:brick_breaker_game/base/widget/empty_app_bar.dart';
@@ -29,7 +31,7 @@ class _LevelScreenState extends State<LevelScreen> {
     return Scaffold(
       appBar: EmptyAppBar(),
       body: Container(
-        color: AppColors.whiteColor,
+        color: Theme.of(context).cardColor,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -38,11 +40,10 @@ class _LevelScreenState extends State<LevelScreen> {
                 height: 30,
               ),
               Text(
-                'GAME LEVEL',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    ?.copyWith(color: AppColors.blueLight, fontSize: 46),
+                MessageKeys.gameLevelTitleKey.tr,
+                style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    color: Theme.of(context).colorScheme.mainColor,
+                    fontSize: 46),
               ),
               const SizedBox(
                 height: 30,
@@ -65,7 +66,7 @@ class _LevelScreenState extends State<LevelScreen> {
                               elevation: 0,
                               child: Container(
                                 color: (index + 1) <= level
-                                    ? AppColors.blueLight
+                                    ? Theme.of(context).colorScheme.mainColor
                                     : AppColors.offWhiteColor,
                                 child: Center(
                                   child: Text(

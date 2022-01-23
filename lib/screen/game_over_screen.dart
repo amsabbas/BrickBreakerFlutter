@@ -1,3 +1,5 @@
+import 'package:brick_breaker_game/base/language/language.dart';
+import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,11 +14,9 @@ class GameOverScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'GAME OVER',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1
-                ?.copyWith(color: AppColors.blueLight, fontSize: 46),
+            MessageKeys.gameOverTitleKey.tr,
+            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                color: Theme.of(context).colorScheme.mainColor, fontSize: 46),
           ),
           const SizedBox(
             height: 30,
@@ -29,11 +29,10 @@ class GameOverScreen extends StatelessWidget {
                   Get.back(result: true);
                 },
                 child: Text(
-                  "Play again?",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(color: AppColors.blueLight, fontSize: 30),
+                  MessageKeys.playAgainButtonTitleKey.tr,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      color: Theme.of(context).colorScheme.mainColor,
+                      fontSize: 30),
                 ),
               ),
               TextButton(
@@ -42,11 +41,10 @@ class GameOverScreen extends StatelessWidget {
                   Get.back();
                 },
                 child: Text(
-                  "Back",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(color: AppColors.blueLight, fontSize: 30),
+                  MessageKeys.backButtonTitleKey.tr,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      color: Theme.of(context).colorScheme.mainColor,
+                      fontSize: 30),
                 ),
               ),
             ],

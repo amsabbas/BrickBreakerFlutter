@@ -1,3 +1,4 @@
+import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class Ball extends StatelessWidget {
   final bool ballShown;
   final double ballWidth = 15;
   final double ballHeight = 15;
+
   const Ball(
       {Key? key,
       required this.ballX,
@@ -22,8 +24,9 @@ class Ball extends StatelessWidget {
             child: Container(
               width: ballWidth,
               height: ballHeight,
-              decoration: const BoxDecoration(
-                  color: AppColors.blueLight, shape: BoxShape.circle),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.mainColor,
+                  shape: BoxShape.circle),
             ),
           )
         : Container();

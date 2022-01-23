@@ -1,3 +1,4 @@
+import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class Player extends StatelessWidget {
               child: Container(
                 height: 15,
                 width: MediaQuery.of(context).size.width * playerWidth / 2,
-                color: AppColors.blueLight,
+                color: Theme.of(context).colorScheme.mainColor,
               ),
             ),
           )

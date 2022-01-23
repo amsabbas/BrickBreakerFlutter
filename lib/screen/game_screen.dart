@@ -1,4 +1,5 @@
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
+import 'package:brick_breaker_game/base/language/language.dart';
 import 'package:brick_breaker_game/controller/game_controller.dart';
 import 'package:brick_breaker_game/widget/award.dart';
 import 'package:collection/collection.dart';
@@ -79,7 +80,7 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: AppColors.whiteColor,
+        color: Theme.of(context).cardColor,
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onHorizontalDragUpdate: (details) {
@@ -87,10 +88,10 @@ class _GameScreenState extends State<GameScreen> {
 
             if (details.delta.dx > sensitivity) {
               _mainController.movePlayerRight(
-                  details.delta.dx / (MediaQuery.of(context).size.width/2.5));
+                  details.delta.dx / (MediaQuery.of(context).size.width / 2.5));
             } else if (details.delta.dx < -sensitivity) {
               _mainController.movePlayerLeft(
-                  details.delta.dx / (MediaQuery.of(context).size.width/2.5));
+                  details.delta.dx / (MediaQuery.of(context).size.width / 2.5));
             }
           },
           child: GetX<MainController>(
@@ -100,7 +101,7 @@ class _GameScreenState extends State<GameScreen> {
                   children: [
                     AppBar(
                       elevation: 1,
-                      title: Obx(() => Text("LEVEL " +
+                      title: Obx(() => Text(MessageKeys.levelTitleKey.tr +
                           _mainController.currentLevel.value.toString())),
                     ),
                     Expanded(

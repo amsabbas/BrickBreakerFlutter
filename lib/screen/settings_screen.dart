@@ -1,4 +1,6 @@
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
+import 'package:brick_breaker_game/base/language/language.dart';
+import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:brick_breaker_game/controller/settings_controller.dart';
 import 'package:flutter/material.dart';
@@ -23,17 +25,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.whiteColor,
+      color: Theme.of(context).cardColor,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Settings',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  ?.copyWith(color: AppColors.blueLight, fontSize: 46),
+              MessageKeys.settingsButtonTitleKey.tr,
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                  color: Theme.of(context).colorScheme.mainColor, fontSize: 46),
             ),
             const SizedBox(
               height: 40,
@@ -46,16 +46,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Obx(
                     () => Text(
                         (_settingsController.audioState.value == true)
-                            ? "Music    ON"
-                            : "Music   OFF",
+                            ? MessageKeys.musicOnButtonTitleKey.tr
+                            : MessageKeys.musicOffButtonTitleKey.tr,
                         style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                            color: AppColors.blueLight, fontSize: 46)),
+                            color: Theme.of(context).colorScheme.mainColor,
+                            fontSize: 46)),
                   ),
                   Obx(() => Icon(
                         (_settingsController.audioState.value == true)
                             ? Icons.music_note
                             : Icons.music_off,
-                        color: AppColors.blueLight,
+                        color: Theme.of(context).colorScheme.mainColor,
                       ))
                 ],
               ),

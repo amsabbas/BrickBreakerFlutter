@@ -1,3 +1,4 @@
+import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class Award extends StatelessWidget {
   final bool awardShown;
   final double awardWidth = 20;
   final double awardHeight = 20;
+
   const Award(
       {Key? key,
       required this.awardX,
@@ -22,7 +24,11 @@ class Award extends StatelessWidget {
             child: SizedBox(
               width: awardWidth,
               height: awardHeight,
-              child: const Center(child: Icon(Icons.expand, color: AppColors.blueLight,)),
+              child: Center(
+                  child: Icon(
+                Icons.expand,
+                color: Theme.of(context).colorScheme.mainColor,
+              )),
             ),
           )
         : Container();

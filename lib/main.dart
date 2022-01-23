@@ -1,6 +1,7 @@
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'base/language/language.dart';
 import 'base/style/theme.dart';
 import 'screen/cover_screen.dart';
 
@@ -14,15 +15,8 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  changeStatusBarColor();
   await initGeneralInjection();
   runApp(const MyApp());
-}
-
-void changeStatusBarColor() {
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(statusBarColor: Colors.white),
-  );
 }
 
 class MyApp extends StatefulWidget {
@@ -33,11 +27,23 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late Locale _locale;
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    setLocale(const Locale("en"));
     return GetMaterialApp(
+      locale: _locale,
+      translations: Language(),
       home: const CoverScreen(),
       theme: CustomTheme.lightTheme,
+      darkTheme: CustomTheme.darkTheme,
     );
   }
 }

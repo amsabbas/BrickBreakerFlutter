@@ -8,6 +8,8 @@ class SettingsController extends GetxController {
 
   RxBool audioState = true.obs;
 
+  RxBool isLightTheme = true.obs;
+
   SettingsController({required this.sharedPrefs});
 
   @override

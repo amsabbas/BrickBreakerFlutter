@@ -1,3 +1,4 @@
+import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,9 @@ class Brick extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(3),
               child: Container(
-                color: brickBrokenHits == 1 ? AppColors.blueLight100 : AppColors.blueLight,
+                color: brickBrokenHits == 1
+                    ? Theme.of(context).colorScheme.mainColorLight
+                    : Theme.of(context).colorScheme.mainColor,
                 height: MediaQuery.of(context).size.height * brickHeight / 2,
                 width: MediaQuery.of(context).size.width * brickWidth / 2,
               ),

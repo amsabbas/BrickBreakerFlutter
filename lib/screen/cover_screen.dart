@@ -1,3 +1,5 @@
+import 'package:brick_breaker_game/base/language/language.dart';
+import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:brick_breaker_game/base/widget/empty_app_bar.dart';
 import 'package:brick_breaker_game/screen/settings_screen.dart';
@@ -14,18 +16,16 @@ class CoverScreen extends StatelessWidget {
     return Scaffold(
       appBar: EmptyAppBar(),
       body: Container(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         width: double.infinity,
         height: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'BRICK BREAKER',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1
-                  ?.copyWith(color: AppColors.blueLight, fontSize: 60),
+              MessageKeys.brickBreakerTitleKey.tr,
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                  color: Theme.of(context).colorScheme.mainColor, fontSize: 60),
             ),
             const SizedBox(
               height: 50,
@@ -33,19 +33,19 @@ class CoverScreen extends StatelessWidget {
             Container(
                 width: 15,
                 height: 15,
-                decoration: const BoxDecoration(
-                    color: AppColors.blueLight, shape: BoxShape.circle)),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.mainColor,
+                    shape: BoxShape.circle)),
             const SizedBox(
               height: 30,
             ),
             GestureDetector(
                 onTap: _startGame,
                 child: Text(
-                  'Tap to play',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(color: AppColors.blueLight, fontSize: 46),
+                  MessageKeys.playButtonTitleKey.tr,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      color: Theme.of(context).colorScheme.mainColor,
+                      fontSize: 46),
                 )),
             const SizedBox(
               height: 30,
@@ -53,11 +53,10 @@ class CoverScreen extends StatelessWidget {
             GestureDetector(
                 onTap: _openSettings,
                 child: Text(
-                  'Settings',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                      ?.copyWith(color: AppColors.blueLight, fontSize: 46),
+                  MessageKeys.settingsButtonTitleKey.tr,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      color: Theme.of(context).colorScheme.mainColor,
+                      fontSize: 46),
                 )),
           ],
         ),
