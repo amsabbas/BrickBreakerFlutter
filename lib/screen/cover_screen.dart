@@ -13,7 +13,7 @@ class CoverScreen extends StatelessWidget {
     return Scaffold(
         appBar: EmptyAppBar(),
         body: GestureDetector(
-          onTap: startGame,
+          onTap: _startGame,
           child: Container(
             color: Colors.white,
             width: double.infinity,
@@ -49,7 +49,7 @@ class CoverScreen extends StatelessWidget {
         ));
   }
 
-  void startGame() {
+  void _startGame() {
     Get.to(() => const LevelScreen());
   }
 }

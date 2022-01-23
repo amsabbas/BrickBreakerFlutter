@@ -330,15 +330,15 @@ class MainController extends GetxController {
     balls.refresh();
   }
 
-  void movePlayerLeft() {
-    if (!(playerX.value.value - 0.1 < -1)) {
-      playerX.value.value -= 0.1;
+  void movePlayerLeft(double delta) {
+    if (!(playerX.value.value - delta.abs() < -1)) {
+      playerX.value.value -= delta.abs();
     }
   }
 
-  void movePlayerRight() {
-    if (!(playerX.value.value + playerWidth >= 1)) {
-      playerX.value.value += (0.1);
+  void movePlayerRight(double delta) {
+    if (!(playerX.value.value + playerWidth + delta.abs() > 1)) {
+      playerX.value.value += delta.abs();
     }
   }
 

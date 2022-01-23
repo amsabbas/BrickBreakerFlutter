@@ -84,10 +84,13 @@ class _GameScreenState extends State<GameScreen> {
           behavior: HitTestBehavior.translucent,
           onHorizontalDragUpdate: (details) {
             int sensitivity = 4;
+
             if (details.delta.dx > sensitivity) {
-              _mainController.movePlayerRight();
+              _mainController.movePlayerRight(
+                  details.delta.dx / (MediaQuery.of(context).size.width/2.5));
             } else if (details.delta.dx < -sensitivity) {
-              _mainController.movePlayerLeft();
+              _mainController.movePlayerLeft(
+                  details.delta.dx / (MediaQuery.of(context).size.width/2.5));
             }
           },
           child: GetX<MainController>(
@@ -111,12 +114,9 @@ class _GameScreenState extends State<GameScreen> {
                           Stack(
                               children: _mainController.balls
                                   .mapIndexed((i, e) => Ball(
-                                        ballX:
-                                            _mainController.balls[i][0],
-                                        ballY:
-                                            _mainController.balls[i][1],
-                                        ballShown:
-                                            _mainController.balls[i][2],
+                                        ballX: _mainController.balls[i][0],
+                                        ballY: _mainController.balls[i][1],
+                                        ballShown: _mainController.balls[i][2],
                                       ))
                                   .toList()),
                           AnimatedBuilder(
