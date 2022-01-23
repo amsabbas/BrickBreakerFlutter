@@ -1,5 +1,7 @@
 import 'package:brick_breaker_game/base/utils/shared_preference.dart';
+import 'package:brick_breaker_game/controller/audio_controller.dart';
 import 'package:brick_breaker_game/controller/game_controller.dart';
+import 'package:brick_breaker_game/controller/settings_controller.dart';
 import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
@@ -10,8 +12,14 @@ Future<void> initGeneralInjection() async {
     await sharedPrefs.init();
     return sharedPrefs;
   });
+
   await GetIt.instance.isReady<SharedPrefs>().then((_) async {
-    getIt.registerFactory<MainController>(
-        () => MainController(sharedPrefs: getIt<SharedPrefs>()));
+    getIt.registerFactory<AudioController>(
+        () => AudioController(sharedPrefs: getIt<SharedPrefs>()));
+    getIt.registerFactory<SettingsController>(
+        () => SettingsController(sharedPrefs: getIt<SharedPrefs>()));
+    getIt.registerFactory<MainController>(() => MainController(
+        sharedPrefs: getIt<SharedPrefs>(),
+        audioController: getIt<AudioController>()));
   });
 }

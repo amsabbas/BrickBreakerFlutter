@@ -1,19 +1,21 @@
 import 'dart:async';
-import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:brick_breaker_game/base/utils/shared_preference.dart';
-import 'package:flutter/cupertino.dart';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:brick_breaker_game/model/game_configuration.dart';
 
 import 'package:get/get.dart';
 
+import 'audio_controller.dart';
+
 enum Direction { up, down, left, right, none }
 
 class MainController extends GetxController {
   SharedPrefs sharedPrefs;
+  AudioController audioController;
 
-  MainController({required this.sharedPrefs});
+  MainController({required this.sharedPrefs, required this.audioController});
 
   int _refreshDurationInMilliseconds = 8;
   bool _isGameStarted = false;
@@ -148,6 +150,7 @@ class MainController extends GetxController {
     }
     if (balls.isEmpty) {
       // player dead
+      audioController.playGameOverAudio();
       playerDead.value = true;
       timer.cancel();
     }
@@ -176,6 +179,7 @@ class MainController extends GetxController {
         awardX.value >= playerX.value.value &&
         awardX.value <= playerX.value.value + playerWidth &&
         awardShown.value) {
+      audioController.playAwardAudio();
       if (playerWidth == 0.9) {
         balls.add([0.0, -0.6, true, Direction.left, Direction.down]);
         balls.refresh();
@@ -216,6 +220,8 @@ class MainController extends GetxController {
             balls[j][1] <= bricks[i][1] + brickHeight &&
             balls[j][1] >= bricks[i][1] &&
             bricks[i][2] > 0) {
+          audioController.playBrickAudio();
+
           bricks[i][2]--;
 
           if (brickAwardTime > 0) {
@@ -265,6 +271,7 @@ class MainController extends GetxController {
       }
     }
     if (allBroken) {
+      audioController.playMissionSuccessAudio();
       playerShown.value = false;
       balls.clear();
       balls.refresh();
