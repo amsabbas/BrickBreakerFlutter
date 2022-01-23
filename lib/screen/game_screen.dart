@@ -3,7 +3,6 @@ import 'package:brick_breaker_game/base/language/language.dart';
 import 'package:brick_breaker_game/controller/game_controller.dart';
 import 'package:brick_breaker_game/widget/award.dart';
 import 'package:collection/collection.dart';
-import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:get/get.dart';
 import '../widget/ball.dart';
 import '../widget/brick.dart';

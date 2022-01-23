@@ -1,6 +1,6 @@
 import 'package:brick_breaker_game/base/language/language.dart';
 import 'package:brick_breaker_game/base/style/color_extension.dart';
-import 'package:brick_breaker_game/base/style/colors.dart';
+
 import 'package:brick_breaker_game/base/widget/empty_app_bar.dart';
 import 'package:brick_breaker_game/screen/settings_screen.dart';
 import 'package:flutter/material.dart';
