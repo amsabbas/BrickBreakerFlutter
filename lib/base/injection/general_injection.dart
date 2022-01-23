@@ -11,6 +11,7 @@ Future<void> initGeneralInjection() async {
     return sharedPrefs;
   });
   await GetIt.instance.isReady<SharedPrefs>().then((_) async {
-    getIt.registerFactory<MainController>(() => MainController());
+    getIt.registerFactory<MainController>(
+        () => MainController(sharedPrefs: getIt<SharedPrefs>()));
   });
 }

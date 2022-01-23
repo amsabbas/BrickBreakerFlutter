@@ -108,12 +108,17 @@ class _GameScreenState extends State<GameScreen> {
                             awardY: _mainController.awardY.value,
                             awardShown: _mainController.awardShown.value,
                           ),
-
-                          Ball(
-                            ballX: _mainController.ballX.value,
-                            ballY: _mainController.ballY.value,
-                            ballShown: _mainController.ballShown.value,
-                          ),
+                          Stack(
+                              children: _mainController.balls
+                                  .mapIndexed((i, e) => Ball(
+                                        ballX:
+                                            _mainController.balls[i][0],
+                                        ballY:
+                                            _mainController.balls[i][1],
+                                        ballShown:
+                                            _mainController.balls[i][2],
+                                      ))
+                                  .toList()),
                           AnimatedBuilder(
                               animation: _mainController.playerX.value,
                               builder: (context, child) {
