@@ -14,12 +14,17 @@ class CustomTheme {
           primary: AppColors.blueLight,
         ),
       ),
+      textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+        primary: AppColors.blueLight,
+      )),
       appBarTheme: const AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle(
             // Status bar color
             statusBarColor: AppColors.whiteColor,
             // Status bar brightness
-            statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
+            statusBarIconBrightness: Brightness.dark,
+            // For Android (dark icons)
             statusBarBrightness: Brightness.dark, // For iOS (dark icons)
           ),
           backgroundColor: Colors.white,
@@ -59,17 +64,22 @@ class CustomTheme {
           primary: AppColors.brownColor,
         ),
       ),
+      textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+        primary: AppColors.brownColor,
+      )),
       appBarTheme: AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle(
             // Status bar color
             statusBarColor: AppColors.darkStatusBarColor,
             // Status bar brightness
-            statusBarIconBrightness: Brightness.light, // For Android (dark icons)
+            statusBarIconBrightness: Brightness.light,
+            // For Android (dark icons)
             statusBarBrightness: Brightness.light, // For iOS (dark icons)
           ),
           foregroundColor: AppColors.brownColor,
           centerTitle: true),
-      inputDecorationTheme:  const InputDecorationTheme(
+      inputDecorationTheme: const InputDecorationTheme(
         errorStyle: TextStyle(
             color: AppColors.redColor, fontFamily: AssetResource.appFontName),
         focusedBorder: OutlineInputBorder(

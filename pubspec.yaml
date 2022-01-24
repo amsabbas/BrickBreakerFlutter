@@ -18,10 +18,10 @@ dependencies:
   shared_preferences: ^2.0.9
   get_it: ^7.2.0
   audioplayers: ^0.20.1
+  flutter_share: ^2.0.0
+  cupertino_icons: ^1.0.2
+  rate_my_app: ^1.1.1+1
 
-
-
-cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:

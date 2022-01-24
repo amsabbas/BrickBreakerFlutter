@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:brick_breaker_game/base/utils/shared_preference.dart';
+import 'package:brick_breaker_game/model/direction.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,8 +9,6 @@ import 'package:brick_breaker_game/model/game_configuration.dart';
 import 'package:get/get.dart';
 
 import 'audio_controller.dart';
-
-enum Direction { up, down, left, right, none }
 
 class MainController extends GetxController {
   SharedPrefs sharedPrefs;

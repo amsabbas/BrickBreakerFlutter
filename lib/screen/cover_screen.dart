@@ -1,15 +1,31 @@
+import 'dart:io';
+
 import 'package:brick_breaker_game/base/language/language.dart';
 import 'package:brick_breaker_game/base/style/color_extension.dart';
+import 'package:brick_breaker_game/base/utils/constants.dart';
 
 import 'package:brick_breaker_game/base/widget/empty_app_bar.dart';
 import 'package:brick_breaker_game/screen/settings_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 
 import 'level_screen.dart';
 
-class CoverScreen extends StatelessWidget {
+class CoverScreen extends StatefulWidget {
   const CoverScreen({Key? key}) : super(key: key);
+
+  @override
+  _CoverScreenState createState() => _CoverScreenState();
+}
+
+class _CoverScreenState extends State<CoverScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _showRateDialog();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +67,30 @@ class CoverScreen extends StatelessWidget {
               height: 30,
             ),
             GestureDetector(
-                onTap: _openSettings,
-                child: Text(
-                  MessageKeys.settingsButtonTitleKey.tr,
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                      color: Theme.of(context).colorScheme.mainColor,
-                      fontSize: 46),
-                )),
+              onTap: _openSettings,
+              child: Text(
+                MessageKeys.settingsButtonTitleKey.tr,
+                style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    color: Theme.of(context).colorScheme.mainColor,
+                    fontSize: 46),
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: _share,
+                  child: Icon(
+                    Icons.share,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
@@ -70,5 +103,48 @@ class CoverScreen extends StatelessWidget {
 
   void _openSettings() {
     Get.to(() => const SettingsScreen());
+  }
+
+  void _share() {
+    FlutterShare.share(
+        title: MessageKeys.brickBreakerTitleKey.tr,
+        text: MessageKeys.downloadNowTitleKey.tr,
+        linkUrl: 'https://play.google.com/store/apps/details?id=' +
+            Constants.packageName,
+        chooserTitle: MessageKeys.brickBreakerTitleKey.tr);
+  }
+
+  void _showRateDialog() {
+    RateMyApp rateMyApp = RateMyApp(
+      minDays: 4,
+      minLaunches: 5,
+      remindDays: 5,
+      remindLaunches: 5,
+      googlePlayIdentifier: Constants.packageName,
+    );
+
+    rateMyApp.init().then((_) {
+      if (rateMyApp.shouldOpenDialog) {
+        rateMyApp.showRateDialog(
+          context,
+          title: MessageKeys.rateTitleKey.tr,
+          // The dialog title.
+          message: MessageKeys.rateDescKey.tr,
+          // The dialog message.
+          rateButton: MessageKeys.rateButtonTitleKey.tr,
+          noButton: MessageKeys.rateNoThanksButtonTitleKey.tr,
+          laterButton: MessageKeys.rateMaybeButtonTitleKey.tr,
+          listener: (button) {
+            return true; // Return false if you want to cancel the click event.
+          },
+          ignoreNativeDialog: Platform.isAndroid,
+          // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
+          dialogStyle: const DialogStyle(),
+          // Custom dialog styles.
+          onDismissed: () => rateMyApp.callEvent(RateMyAppEventType
+              .laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
+        );
+      }
+    });
   }
 }
