@@ -1,8 +1,11 @@
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:brick_breaker_game/base/language/language.dart';
 import 'package:brick_breaker_game/base/style/color_extension.dart';
+import 'package:brick_breaker_game/base/style/colors.dart';
+import 'package:brick_breaker_game/base/style/theme.dart';
 import 'package:brick_breaker_game/controller/settings_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -37,28 +40,74 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(
               height: 40,
             ),
-            GestureDetector(
-              onTap: () => _triggerAudio(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Obx(
-                    () => Text(
-                        (_settingsController.audioState.value == true)
-                            ? MessageKeys.musicOnButtonTitleKey.tr
-                            : MessageKeys.musicOffButtonTitleKey.tr,
-                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
+            Column(
+              children: [
+                GestureDetector(
+                    onTap: () => _triggerAudio(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Obx(
+                          () => Text(
+                              (_settingsController.audioState.value == true)
+                                  ? MessageKeys.musicButtonTitleKey.tr +
+                                      "    " +
+                                      MessageKeys.onButtonTitleKey.tr
+                                  : MessageKeys.musicButtonTitleKey.tr +
+                                      "    " +
+                                      MessageKeys.offButtonTitleKey.tr,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .mainColor,
+                                      fontSize: 46)),
+                        ),
+                        Obx(() => Icon(
+                              (_settingsController.audioState.value == true)
+                                  ? Icons.music_note
+                                  : Icons.music_off,
+                              color: Theme.of(context).colorScheme.mainColor,
+                            ))
+                      ],
+                    )),
+                const SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  onTap: () => _triggerDarkMode(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Obx(
+                        () => Text(
+                            (_settingsController.isDarkTheme.value == true)
+                                ? MessageKeys.darkModeButtonTitleKey.tr +
+                                    "    " +
+                                    MessageKeys.onButtonTitleKey.tr
+                                : MessageKeys.darkModeButtonTitleKey.tr +
+                                    "    " +
+                                    MessageKeys.offButtonTitleKey.tr,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                ?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.mainColor,
+                                    fontSize: 46)),
+                      ),
+                      Obx(() => Icon(
+                            (_settingsController.isDarkTheme.value == true)
+                                ? Icons.dark_mode
+                                : Icons.light_mode,
                             color: Theme.of(context).colorScheme.mainColor,
-                            fontSize: 46)),
+                          ))
+                    ],
                   ),
-                  Obx(() => Icon(
-                        (_settingsController.audioState.value == true)
-                            ? Icons.music_note
-                            : Icons.music_off,
-                        color: Theme.of(context).colorScheme.mainColor,
-                      ))
-                ],
-              ),
+                )
+              ],
             ),
           ],
         ),
@@ -68,5 +117,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _triggerAudio() {
     _settingsController.saveAudioState(!_settingsController.isAudioEnabled());
+  }
+
+  void _triggerDarkMode() {
+    if (_settingsController.isThemeDark()) {
+      Get.changeTheme(CustomTheme.lightTheme);
+      _changeStatusBarColor(AppColors.whiteColor, Brightness.dark);
+    } else {
+      Get.changeTheme(CustomTheme.darkTheme);
+      _changeStatusBarColor(AppColors.darkStatusBarColor, Brightness.light);
+    }
+    _settingsController.saveDarkState(!_settingsController.isThemeDark());
+  }
+
+  void _changeStatusBarColor(Color statusBarColor, Brightness brightness) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+          statusBarColor: statusBarColor,
+          statusBarIconBrightness: brightness,
+          statusBarBrightness: brightness),
+    );
   }
 }

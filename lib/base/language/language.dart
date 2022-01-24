@@ -4,8 +4,10 @@ class MessageKeys {
   static const String brickBreakerTitleKey = "brickBreakerTitleKey";
   static const String playButtonTitleKey = 'playButtonTitleKey';
   static const String settingsButtonTitleKey = 'settingsButtonTitleKey';
-  static const String musicOnButtonTitleKey = 'musicOnButtonTitleKey';
-  static const String musicOffButtonTitleKey = 'musicOffButtonTitleKey';
+  static const String musicButtonTitleKey = 'musicButtonTitleKey';
+  static const String onButtonTitleKey = 'onButtonTitleKey';
+  static const String offButtonTitleKey = 'offButtonTitleKey';
+  static const String darkModeButtonTitleKey = 'darkModeButtonTitleKey';
   static const String gameLevelTitleKey = 'gameLevelTitleKey';
   static const String levelTitleKey = 'levelTitleKey';
   static const String nextButtonTitleKey = 'nextButtonTitleKey';
@@ -22,8 +24,8 @@ class Language extends Translations {
           MessageKeys.brickBreakerTitleKey: 'BRICK BREAKER',
           MessageKeys.playButtonTitleKey: 'Tap to play',
           MessageKeys.settingsButtonTitleKey: 'Settings',
-          MessageKeys.musicOnButtonTitleKey: 'Music    ON',
-          MessageKeys.musicOffButtonTitleKey: 'Music    OFF',
+          MessageKeys.musicButtonTitleKey: 'Music',
+          MessageKeys.darkModeButtonTitleKey: 'Dark Mode',
           MessageKeys.gameLevelTitleKey: 'Game Level',
           MessageKeys.levelTitleKey: 'Level ',
           MessageKeys.playAgainButtonTitleKey: 'Play Again?',
@@ -31,13 +33,15 @@ class Language extends Translations {
           MessageKeys.gameOverTitleKey: 'Game Over',
           MessageKeys.congratulationTitleKey: 'Wow',
           MessageKeys.nextButtonTitleKey: 'Next?',
+          MessageKeys.onButtonTitleKey: 'ON',
+          MessageKeys.offButtonTitleKey: 'OFF',
         },
         'ar': {
           MessageKeys.brickBreakerTitleKey: 'BRICK BREAKER',
           MessageKeys.playButtonTitleKey: 'Tap to play',
           MessageKeys.settingsButtonTitleKey: 'Settings',
-          MessageKeys.musicOnButtonTitleKey: 'Music    ON',
-          MessageKeys.musicOffButtonTitleKey: 'Music    OFF',
+          MessageKeys.musicButtonTitleKey: 'Music',
+          MessageKeys.darkModeButtonTitleKey: 'Dark Mode',
           MessageKeys.gameLevelTitleKey: 'Game Level',
           MessageKeys.levelTitleKey: 'Level ',
           MessageKeys.playAgainButtonTitleKey: 'Play Again?',
@@ -45,6 +49,8 @@ class Language extends Translations {
           MessageKeys.gameOverTitleKey: 'Game Over',
           MessageKeys.congratulationTitleKey: 'Wow',
           MessageKeys.nextButtonTitleKey: 'Next?',
+          MessageKeys.onButtonTitleKey: 'ON',
+          MessageKeys.offButtonTitleKey: 'OFF',
         }
       };
 }
