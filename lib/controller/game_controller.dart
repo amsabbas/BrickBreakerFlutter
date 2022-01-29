@@ -8,13 +8,11 @@ import 'package:brick_breaker_game/model/game_configuration.dart';
 
 import 'package:get/get.dart';
 
-import 'audio_controller.dart';
 
-class MainController extends GetxController {
+class GameController extends GetxController {
   SharedPrefs sharedPrefs;
-  AudioController audioController;
 
-  MainController({required this.sharedPrefs, required this.audioController});
+  GameController({required this.sharedPrefs});
 
   int _refreshDurationInMilliseconds = 8;
   bool _isGameStarted = false;
@@ -32,6 +30,7 @@ class MainController extends GetxController {
   late double _firstBrickX;
   late double _wallGap;
   late int _brickBrokenHits;
+  RxBool brickBroken = false.obs;
   RxBool allBricksBroken = false.obs;
   RxList bricks = [].obs;
 
@@ -149,7 +148,6 @@ class MainController extends GetxController {
     }
     if (balls.isEmpty) {
       // player dead
-      audioController.playGameOverAudio();
       playerDead.value = true;
       timer.cancel();
     }
@@ -178,7 +176,6 @@ class MainController extends GetxController {
         awardX.value >= playerX.value.value &&
         awardX.value <= playerX.value.value + playerWidth &&
         awardShown.value) {
-      audioController.playAwardAudio();
       if (playerWidth == 0.9) {
         balls.add([0.0, -0.6, true, Direction.left, Direction.down]);
         balls.refresh();
@@ -219,7 +216,8 @@ class MainController extends GetxController {
             balls[j][1] <= bricks[i][1] + brickHeight &&
             balls[j][1] >= bricks[i][1] &&
             bricks[i][2] > 0) {
-          audioController.playBrickAudio();
+          brickBroken.value = true;
+          brickBroken.refresh();
 
           bricks[i][2]--;
 
@@ -270,7 +268,6 @@ class MainController extends GetxController {
       }
     }
     if (allBroken) {
-      audioController.playMissionSuccessAudio();
       playerShown.value = false;
       balls.clear();
       balls.refresh();
@@ -348,9 +345,7 @@ class MainController extends GetxController {
     }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  void disposeGame() {
     currentLevel.close();
     level.close();
     bricks.close();
@@ -359,5 +354,11 @@ class MainController extends GetxController {
     playerShown.close();
     playerDead.close();
     allBricksBroken.close();
+  }
+
+  @override
+  void dispose() {
+    dispose();
+    super.dispose();
   }
 }

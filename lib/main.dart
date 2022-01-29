@@ -43,6 +43,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _settingsController = Get.put(GetIt.instance<SettingsController>());
+
   }
 
   @override
@@ -57,5 +58,11 @@ class _MyAppState extends State<MyApp> {
           : CustomTheme.lightTheme,
       darkTheme: CustomTheme.darkTheme,
     );
+  }
+
+  @override
+  void dispose() {
+    _settingsController.dispose();
+    super.dispose();
   }
 }

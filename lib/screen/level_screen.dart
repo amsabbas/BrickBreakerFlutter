@@ -17,12 +17,12 @@ class LevelScreen extends StatefulWidget {
 }
 
 class _LevelScreenState extends State<LevelScreen> {
-  late MainController _mainController;
+  late GameController _mainController;
 
   @override
   void initState() {
     super.initState();
-    _mainController = Get.put(getIt<MainController>());
+    _mainController = Get.put(getIt<GameController>());
     _mainController.loadLevel();
   }
 
@@ -49,7 +49,7 @@ class _LevelScreenState extends State<LevelScreen> {
                 height: 30,
               ),
               Expanded(
-                  child: GetX<MainController>(
+                  child: GetX<GameController>(
                       init: _mainController, //here
                       builder: (controller) {
                         int level = _mainController.level.value;

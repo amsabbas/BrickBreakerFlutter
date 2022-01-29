@@ -4,6 +4,7 @@ import 'package:brick_breaker_game/base/utils/shared_preference.dart';
 import 'package:get/get.dart';
 
 class SettingsController extends GetxController {
+
   SharedPrefs sharedPrefs;
 
   RxBool audioState = true.obs;

@@ -4,44 +4,86 @@ import 'package:brick_breaker_game/base/utils/shared_preference.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class AudioController extends GetxController {
-  late AudioCache _audioPlayer;
+  AudioPlayer? _gameOverPlayer,
+      _brickPlayer,
+      _awardPlayer,
+      _missionSuccessPlayer,
+      _gamePlayer;
+
   late SharedPrefs sharedPrefs;
 
-  AudioController({required this.sharedPrefs}) {
-    _audioPlayer = AudioCache();
-  }
+  AudioController({required this.sharedPrefs});
 
-  void playBrickAudio() {
+  void playBrickAudio() async {
     if (sharedPrefs.getBool(Constants.audioKey) ?? true) {
-      const alarmAudioPath = "audio/brick.wav";
-      _audioPlayer.play(alarmAudioPath);
+      AudioCache audioCache = AudioCache();
+      _brickPlayer = await audioCache.play("audio/brick.wav");
     }
   }
 
-  void playGameOverAudio() {
+  void stopBrickAudio() {
+    _brickPlayer?.stop();
+  }
+
+  void playGameOverAudio() async {
     if (sharedPrefs.getBool(Constants.audioKey) ?? true) {
-      const alarmAudioPath = "audio/game_over.wav";
-      _audioPlayer.play(alarmAudioPath);
+      AudioCache audioCache = AudioCache();
+      _brickPlayer = await audioCache.play("audio/game_over.wav");
     }
   }
 
-  void playAwardAudio() {
+  void stopGameOverAudio() {
+    _gameOverPlayer?.stop();
+  }
+
+  void playAwardAudio() async {
     if (sharedPrefs.getBool(Constants.audioKey) ?? true) {
-      const alarmAudioPath = "audio/award.wav";
-      _audioPlayer.play(alarmAudioPath);
+      AudioCache audioCache = AudioCache();
+      _awardPlayer = await audioCache.play("audio/award.wav");
     }
   }
 
-  void playMissionSuccessAudio() {
+  void stopAwardAudio() {
+    _awardPlayer?.stop();
+  }
+
+  void playMissionSuccessAudio() async {
     if (sharedPrefs.getBool(Constants.audioKey) ?? true) {
-      const alarmAudioPath = "audio/mission_success.wav";
-      _audioPlayer.play(alarmAudioPath);
+      AudioCache audioCache = AudioCache();
+      _missionSuccessPlayer =
+          await audioCache.play("audio/mission_success.wav");
     }
+  }
+
+  void stopMissionSuccessAudio() {
+    _missionSuccessPlayer?.stop();
+  }
+
+  void playMusicAudio() async {
+    if (sharedPrefs.getBool(Constants.audioKey) ?? true) {
+      AudioCache audioCache = AudioCache();
+      _gamePlayer = await audioCache.loop("audio/game.mp3");
+    }
+  }
+
+  void stopMusicAudio() {
+    _gamePlayer?.stop();
+  }
+
+  void stopAllGameAudio() {
+    stopAwardAudio();
+    stopBrickAudio();
+    stopGameOverAudio();
+    stopMissionSuccessAudio();
   }
 
   @override
   void dispose() {
-    _audioPlayer.clearAll();
+    stopMusicAudio();
+    stopAwardAudio();
+    stopBrickAudio();
+    stopGameOverAudio();
+    stopMissionSuccessAudio();
     super.dispose();
   }
 }

@@ -18,8 +18,7 @@ Future<void> initGeneralInjection() async {
         () => AudioController(sharedPrefs: getIt<SharedPrefs>()));
     getIt.registerFactory<SettingsController>(
         () => SettingsController(sharedPrefs: getIt<SharedPrefs>()));
-    getIt.registerFactory<MainController>(() => MainController(
-        sharedPrefs: getIt<SharedPrefs>(),
-        audioController: getIt<AudioController>()));
+    getIt.registerFactory<GameController>(
+        () => GameController(sharedPrefs: getIt<SharedPrefs>()));
   });
 }

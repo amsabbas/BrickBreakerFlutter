@@ -1,5 +1,6 @@
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:brick_breaker_game/base/language/language.dart';
+import 'package:brick_breaker_game/controller/audio_controller.dart';
 import 'package:brick_breaker_game/controller/game_controller.dart';
 import 'package:brick_breaker_game/widget/award.dart';
 import 'package:collection/collection.dart';
@@ -26,26 +27,45 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  late MainController _mainController;
-  late Worker _gameOverWorker, _congratulationsWorker;
+  late final GameController _gameController;
+  late final AudioController _audioController;
+  late Worker _gameOverWorker,
+      _congratulationsWorker,
+      _awardWorker,
+      _brickWorker;
 
   @override
   void initState() {
     super.initState();
-    _mainController = Get.put(getIt<MainController>());
+    _gameController = Get.put(getIt<GameController>());
+    _audioController = Get.put(getIt<AudioController>());
 
     WidgetsBinding.instance
-        ?.addPostFrameCallback((_) => _mainController.initLevel(widget.level));
+        ?.addPostFrameCallback((_) => _gameController.initLevel(widget.level));
 
-    _gameOverWorker = ever(_mainController.playerDead, (bool playerDead) {
+    _gameOverWorker = ever(_gameController.playerDead, (bool playerDead) {
       if (playerDead) {
+        _audioController.playGameOverAudio();
         showGameOverScreen();
       }
     });
 
-    _congratulationsWorker =
-        ever(_mainController.allBricksBroken, (bool broken) {
+    _awardWorker = ever(_gameController.awardShown, (bool shown) {
+      if (shown) {
+        _audioController.playAwardAudio();
+      }
+    });
+
+    _brickWorker = ever(_gameController.brickBroken, (bool broken) {
       if (broken) {
+        _audioController.playBrickAudio();
+      }
+    });
+
+    _congratulationsWorker =
+        ever(_gameController.allBricksBroken, (bool broken) {
+      if (broken) {
+        _audioController.playMissionSuccessAudio();
         showCongratulationsScreen();
       }
     });
@@ -58,7 +78,7 @@ class _GameScreenState extends State<GameScreen> {
           barrierDismissible: false,
           barrierColor: Colors.black.withOpacity(0.04));
       if (data != null && data) {
-        _mainController.resetGame();
+        _gameController.resetGame();
       }
     }
   }
@@ -70,95 +90,107 @@ class _GameScreenState extends State<GameScreen> {
           barrierDismissible: false,
           barrierColor: Colors.black.withOpacity(0.04));
       if (data != null && data) {
-        _mainController.resetGame();
+        _gameController.resetGame();
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: Theme.of(context).cardColor,
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onHorizontalDragUpdate: (details) {
-            int sensitivity = 4;
+    return WillPopScope(
+      onWillPop: () {
+        _gameController.resetGame();
+        _audioController.stopAllGameAudio();
+        return Future.value(true);
+      },
+      child: Scaffold(
+        body: Container(
+          color: Theme.of(context).cardColor,
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onHorizontalDragUpdate: (details) {
+              int sensitivity = 4;
 
-            if (details.delta.dx > sensitivity) {
-              _mainController.movePlayerRight(
-                  details.delta.dx / (MediaQuery.of(context).size.width / 2.5));
-            } else if (details.delta.dx < -sensitivity) {
-              _mainController.movePlayerLeft(
-                  details.delta.dx / (MediaQuery.of(context).size.width / 2.5));
-            }
-          },
-          child: GetX<MainController>(
-              init: _mainController, //here
-              builder: (controller) {
-                return Column(
-                  children: [
-                    AppBar(
-                      elevation: 1,
-                      title: Obx(() => Text(MessageKeys.levelTitleKey.tr +
-                          _mainController.currentLevel.value.toString())),
-                    ),
-                    Expanded(
-                      child: Stack(
-                        children: [
-                          Award(
-                            awardX: _mainController.awardX.value,
-                            awardY: _mainController.awardY.value,
-                            awardShown: _mainController.awardShown.value,
-                          ),
-                          Stack(
-                              children: _mainController.balls
-                                  .mapIndexed((i, e) => Ball(
-                                        ballX: _mainController.balls[i][0],
-                                        ballY: _mainController.balls[i][1],
-                                        ballShown: _mainController.balls[i][2],
-                                      ))
-                                  .toList()),
-                          AnimatedBuilder(
-                              animation: _mainController.playerX.value,
-                              builder: (context, child) {
-                                return Player(
-                                  playerShown:
-                                      _mainController.playerShown.value,
-                                  playerWidth: _mainController.playerWidth,
-                                  playerX: _mainController.playerX.value.value,
-                                );
-                              }),
-                          Stack(
-                              children: _mainController.bricks
-                                  .mapIndexed((i, e) => Brick(
-                                        brickX: _mainController.bricks[i][0],
-                                        brickY: _mainController.bricks[i][1],
-                                        brickWidth: _mainController.brickWidth,
-                                        brickHeight:
-                                            _mainController.brickHeight,
-                                        brickBrokenHits:
-                                            _mainController.bricks[i][2],
-                                      ))
-                                  .toList()),
-                        ],
+              if (details.delta.dx > sensitivity) {
+                _gameController.movePlayerRight(details.delta.dx /
+                    (MediaQuery.of(context).size.width / 2.5));
+              } else if (details.delta.dx < -sensitivity) {
+                _gameController.movePlayerLeft(details.delta.dx /
+                    (MediaQuery.of(context).size.width / 2.5));
+              }
+            },
+            child: GetX<GameController>(
+                init: _gameController, //here
+                builder: (controller) {
+                  return Column(
+                    children: [
+                      AppBar(
+                        elevation: 1,
+                        title: Obx(() => Text(MessageKeys.levelTitleKey.tr +
+                            _gameController.currentLevel.value.toString())),
                       ),
-                    ),
-                  ],
-                );
-              }),
-          onTap: _startGame,
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            Award(
+                              awardX: _gameController.awardX.value,
+                              awardY: _gameController.awardY.value,
+                              awardShown: _gameController.awardShown.value,
+                            ),
+                            Stack(
+                                children: _gameController.balls
+                                    .mapIndexed((i, e) => Ball(
+                                          ballX: _gameController.balls[i][0],
+                                          ballY: _gameController.balls[i][1],
+                                          ballShown: _gameController.balls[i]
+                                              [2],
+                                        ))
+                                    .toList()),
+                            AnimatedBuilder(
+                                animation: _gameController.playerX.value,
+                                builder: (context, child) {
+                                  return Player(
+                                    playerShown:
+                                        _gameController.playerShown.value,
+                                    playerWidth: _gameController.playerWidth,
+                                    playerX:
+                                        _gameController.playerX.value.value,
+                                  );
+                                }),
+                            Stack(
+                                children: _gameController.bricks
+                                    .mapIndexed((i, e) => Brick(
+                                          brickX: _gameController.bricks[i][0],
+                                          brickY: _gameController.bricks[i][1],
+                                          brickWidth:
+                                              _gameController.brickWidth,
+                                          brickHeight:
+                                              _gameController.brickHeight,
+                                          brickBrokenHits:
+                                              _gameController.bricks[i][2],
+                                        ))
+                                    .toList()),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+            onTap: _startGame,
+          ),
         ),
       ),
     );
   }
 
   void _startGame() {
-    _mainController.startGame();
+    _gameController.startGame();
   }
 
   @override
   void dispose() {
+    _brickWorker.dispose();
+    _awardWorker.dispose();
     _gameOverWorker.dispose();
     _congratulationsWorker.dispose();
     super.dispose();
