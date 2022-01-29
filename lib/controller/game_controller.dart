@@ -8,7 +8,6 @@ import 'package:brick_breaker_game/model/game_configuration.dart';
 
 import 'package:get/get.dart';
 
-
 class GameController extends GetxController {
   SharedPrefs sharedPrefs;
 
@@ -45,6 +44,7 @@ class GameController extends GetxController {
 
   RxDouble awardX = 0.0.obs;
   RxDouble awardY = 1.0.obs;
+  Rx<IconData> awardIconData = Icons.gamepad.obs;
   final double _awardYIncrements = 0.01;
   RxBool awardShown = false.obs;
   int brickAwardTime = 0;
@@ -192,10 +192,11 @@ class GameController extends GetxController {
     }
   }
 
-  void _addAward(double x, double y) {
+  void _addAward(double x, double y, IconData iconData) {
     if (awardShown.value == false) {
       awardX.value = x;
       awardY.value = y;
+      awardIconData.value = iconData;
       awardShown.value = true;
     }
   }
@@ -224,7 +225,8 @@ class GameController extends GetxController {
           if (brickAwardTime > 0) {
             int currentTime = DateTime.now().second;
             if (currentTime - brickAwardTime <= 1) {
-              _addAward(balls[j][0], balls[j][1]);
+              _addAward(balls[j][0], balls[j][1],
+                  playerWidth == 0.9 ? Icons.circle_outlined : Icons.gamepad);
             }
           }
           brickAwardTime = DateTime.now().second;

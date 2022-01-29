@@ -136,6 +136,7 @@ class _GameScreenState extends State<GameScreen> {
                               awardX: _gameController.awardX.value,
                               awardY: _gameController.awardY.value,
                               awardShown: _gameController.awardShown.value,
+                              icon: _gameController.awardIconData.value,
                             ),
                             Stack(
                                 children: _gameController.balls

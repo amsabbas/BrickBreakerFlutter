@@ -5,11 +5,13 @@ class Award extends StatelessWidget {
   final double awardX;
   final double awardY;
   final bool awardShown;
+  final IconData icon;
   final double awardWidth = 20;
   final double awardHeight = 20;
 
   const Award(
       {Key? key,
+      required this.icon,
       required this.awardX,
       required this.awardY,
       required this.awardShown})
@@ -25,7 +27,7 @@ class Award extends StatelessWidget {
               height: awardHeight,
               child: Center(
                   child: Icon(
-                Icons.gamepad,
+                icon,
                 color: Theme.of(context).colorScheme.mainColor,
               )),
             ),

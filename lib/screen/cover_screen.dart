@@ -56,17 +56,9 @@ class _CoverScreenState extends State<CoverScreen> {
                     fontSize: 60),
               ),
               const SizedBox(
-                height: 50,
+                height: 60,
               ),
-              Container(
-                  width: 15,
-                  height: 15,
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.mainColor,
-                      shape: BoxShape.circle)),
-              const SizedBox(
-                height: 30,
-              ),
+
               GestureDetector(
                   onTap: _startGame,
                   child: Text(

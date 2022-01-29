@@ -29,7 +29,7 @@ class Language extends Translations {
   Map<String, Map<String, String>> get keys => {
         'en': {
           MessageKeys.brickBreakerTitleKey: 'BRICK BREAKER',
-          MessageKeys.playButtonTitleKey: 'Tap to play',
+          MessageKeys.playButtonTitleKey: 'Play',
           MessageKeys.settingsButtonTitleKey: 'Settings',
           MessageKeys.musicButtonTitleKey: 'Music',
           MessageKeys.darkModeButtonTitleKey: 'Dark Mode',
