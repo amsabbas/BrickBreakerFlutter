@@ -3,6 +3,7 @@ import 'package:brick_breaker_game/base/language/language.dart';
 import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:brick_breaker_game/base/style/theme.dart';
+import 'package:brick_breaker_game/controller/audio_controller.dart';
 import 'package:brick_breaker_game/controller/settings_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,10 +18,12 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   late SettingsController _settingsController;
+  late AudioController _audioController;
 
   @override
   void initState() {
     super.initState();
+    _audioController = Get.put(getIt<AudioController>());
     _settingsController = Get.put(getIt<SettingsController>());
   }
 
@@ -117,6 +120,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _triggerAudio() {
     _settingsController.saveAudioState(!_settingsController.isAudioEnabled());
+    if (!_settingsController.isAudioEnabled()) {
+      _audioController.stopAllGameAudio();
+      _audioController.stopMusicAudio();
+    } else {
+      _audioController.playMusicAudio();
+    }
   }
 
   void _triggerDarkMode() {

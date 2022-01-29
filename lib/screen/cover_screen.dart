@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:brick_breaker_game/base/language/language.dart';
 import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:brick_breaker_game/base/utils/constants.dart';
 
 import 'package:brick_breaker_game/base/widget/empty_app_bar.dart';
+import 'package:brick_breaker_game/controller/audio_controller.dart';
 import 'package:brick_breaker_game/screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
@@ -21,77 +23,88 @@ class CoverScreen extends StatefulWidget {
 }
 
 class _CoverScreenState extends State<CoverScreen> {
+  late final AudioController _audioController;
+
   @override
   void initState() {
     super.initState();
     _showRateDialog();
+    _audioController = Get.put(getIt<AudioController>());
+    _audioController.playMusicAudio();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: EmptyAppBar(),
-      body: Container(
-        color: Theme.of(context).cardColor,
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              MessageKeys.brickBreakerTitleKey.tr,
-              style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                  color: Theme.of(context).colorScheme.mainColor, fontSize: 60),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            Container(
-                width: 15,
-                height: 15,
-                decoration: BoxDecoration(
+    return WillPopScope(
+      onWillPop: () {
+        _audioController.stopMusicAudio();
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: EmptyAppBar(),
+        body: Container(
+          color: Theme.of(context).cardColor,
+          width: double.infinity,
+          height: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                MessageKeys.brickBreakerTitleKey.tr,
+                style: Theme.of(context).textTheme.bodyText1?.copyWith(
                     color: Theme.of(context).colorScheme.mainColor,
-                    shape: BoxShape.circle)),
-            const SizedBox(
-              height: 30,
-            ),
-            GestureDetector(
-                onTap: _startGame,
+                    fontSize: 60),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Container(
+                  width: 15,
+                  height: 15,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.mainColor,
+                      shape: BoxShape.circle)),
+              const SizedBox(
+                height: 30,
+              ),
+              GestureDetector(
+                  onTap: _startGame,
+                  child: Text(
+                    MessageKeys.playButtonTitleKey.tr,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: Theme.of(context).colorScheme.mainColor,
+                        fontSize: 46),
+                  )),
+              const SizedBox(
+                height: 30,
+              ),
+              GestureDetector(
+                onTap: _openSettings,
                 child: Text(
-                  MessageKeys.playButtonTitleKey.tr,
+                  MessageKeys.settingsButtonTitleKey.tr,
                   style: Theme.of(context).textTheme.bodyText1?.copyWith(
                       color: Theme.of(context).colorScheme.mainColor,
                       fontSize: 46),
-                )),
-            const SizedBox(
-              height: 30,
-            ),
-            GestureDetector(
-              onTap: _openSettings,
-              child: Text(
-                MessageKeys.settingsButtonTitleKey.tr,
-                style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    color: Theme.of(context).colorScheme.mainColor,
-                    fontSize: 46),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: _share,
-                  child: Icon(
-                    Icons.share,
-                    color: Theme.of(context).primaryColor,
-                  ),
                 ),
-              ],
-            )
-          ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: _share,
+                    child: Icon(
+                      Icons.share,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -146,5 +159,11 @@ class _CoverScreenState extends State<CoverScreen> {
         );
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _audioController.dispose();
+    super.dispose();
   }
 }
