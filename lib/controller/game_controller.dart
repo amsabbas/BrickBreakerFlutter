@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:brick_breaker_game/base/utils/constants.dart';
 import 'package:brick_breaker_game/base/utils/shared_preference.dart';
 import 'package:brick_breaker_game/model/direction.dart';
 import 'dart:convert';
@@ -15,6 +16,7 @@ class GameController extends GetxController {
 
   int _refreshDurationInMilliseconds = 8;
   bool _isGameStarted = false;
+  bool isGameEnded = false;
 
   RxInt level = 1.obs;
   RxInt currentLevel = 1.obs;
@@ -64,11 +66,16 @@ class GameController extends GetxController {
   }
 
   void updateLevel() {
-    currentLevel.value++;
-    int savedLevel = sharedPrefs.getInt("level") ?? 1;
-    if (currentLevel.value > savedLevel) {
-      sharedPrefs.putInt("level", currentLevel.value);
-      level.value = currentLevel.value;
+    if (currentLevel <= Constants.levels) {
+      currentLevel.value++;
+      int savedLevel = sharedPrefs.getInt("level") ?? 1;
+      if (currentLevel.value > savedLevel) {
+        sharedPrefs.putInt("level", currentLevel.value);
+        level.value = currentLevel.value;
+      }
+      isGameEnded = false;
+    } else {
+      isGameEnded = true;
     }
   }
 

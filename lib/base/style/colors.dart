@@ -10,7 +10,7 @@ class AppColors {
   static const Color blueLight100 = Color(0xFF80D8FF);
 
   static const Color brownColor = Color.fromRGBO(192, 176, 90, 1);
-  static const Color brownColorLight = Color.fromRGBO(192, 176, 90, 0.5);
+  static const Color brownColorLight = Color.fromRGBO(192, 176, 90, 0.6);
 
   static Color darkStatusBarColor = Colors.grey[800]!;
 

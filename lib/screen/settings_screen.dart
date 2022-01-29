@@ -38,7 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text(
               MessageKeys.settingsButtonTitleKey.tr,
               style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                  color: Theme.of(context).colorScheme.mainColor, fontSize: 46),
+                  color: Theme.of(context).colorScheme.mainColor, fontSize: 36),
             ),
             const SizedBox(
               height: 40,
@@ -66,13 +66,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .mainColor,
-                                      fontSize: 46)),
+                                      fontSize: 30)),
                         ),
                         Obx(() => Icon(
                               (_settingsController.audioState.value == true)
                                   ? Icons.music_note
                                   : Icons.music_off,
                               color: Theme.of(context).colorScheme.mainColor,
+                              size: 30,
                             ))
                       ],
                     )),
@@ -99,13 +100,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ?.copyWith(
                                     color:
                                         Theme.of(context).colorScheme.mainColor,
-                                    fontSize: 46)),
+                                    fontSize: 30)),
                       ),
                       Obx(() => Icon(
                             (_settingsController.isDarkTheme.value == true)
                                 ? Icons.dark_mode
                                 : Icons.light_mode,
                             color: Theme.of(context).colorScheme.mainColor,
+                            size: 30,
                           ))
                     ],
                   ),

@@ -74,7 +74,10 @@ class _GameScreenState extends State<GameScreen> {
   void showCongratulationsScreen() async {
     if (Get.currentRoute == "/GameScreen") {
       // dispose worker take some time
-      final data = await Get.dialog(const GameCongratulationsScreen(),
+      final data = await Get.dialog(
+          GameCongratulationsScreen(
+            isGameEnded: _gameController.isGameEnded,
+          ),
           barrierDismissible: false,
           barrierColor: Colors.black.withOpacity(0.04));
       if (data != null && data) {

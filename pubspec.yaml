@@ -43,5 +43,8 @@ flutter:
     - family: Debug
       fonts:
         - asset: assets/fonts/debug.otf
+    - family: Dilo
+      fonts:
+        - asset: assets/fonts/dilo.ttf
 
 

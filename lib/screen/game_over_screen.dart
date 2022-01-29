@@ -8,47 +8,52 @@ class GameOverScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            MessageKeys.gameOverTitleKey.tr,
-            style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                color: Theme.of(context).colorScheme.mainColor, fontSize: 46),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Get.back(result: true);
-                },
-                child: Text(
-                  MessageKeys.playAgainButtonTitleKey.tr,
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                      color: Theme.of(context).colorScheme.mainColor,
-                      fontSize: 30),
+    return WillPopScope(
+      onWillPop: () {
+        return Future.value(false);
+      },
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              MessageKeys.gameOverTitleKey.tr,
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                  color: Theme.of(context).colorScheme.mainColor, fontSize: 46),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Get.back(result: true);
+                  },
+                  child: Text(
+                    MessageKeys.playAgainButtonTitleKey.tr,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: Theme.of(context).colorScheme.mainColor,
+                        fontSize: 30),
+                  ),
                 ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Get.back();
-                  Get.back();
-                },
-                child: Text(
-                  MessageKeys.backButtonTitleKey.tr,
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                      color: Theme.of(context).colorScheme.mainColor,
-                      fontSize: 30),
+                TextButton(
+                  onPressed: () {
+                    Get.back();
+                    Get.back();
+                  },
+                  child: Text(
+                    MessageKeys.backButtonTitleKey.tr,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: Theme.of(context).colorScheme.mainColor,
+                        fontSize: 30),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

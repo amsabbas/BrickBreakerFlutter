@@ -25,7 +25,7 @@ class Brick extends StatelessWidget {
             alignment:
                 Alignment((2 * brickX + brickWidth) / (2 - brickWidth), brickY),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(3),
+              borderRadius: BorderRadius.circular(5),
               child: Container(
                 color: brickBrokenHits == 1
                     ? Theme.of(context).colorScheme.mainColorLight

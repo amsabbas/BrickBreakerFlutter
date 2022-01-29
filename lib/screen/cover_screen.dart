@@ -49,11 +49,11 @@ class _CoverScreenState extends State<CoverScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
               Text(
                 MessageKeys.brickBreakerTitleKey.tr,
                 style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    color: Theme.of(context).colorScheme.mainColor,
-                    fontSize: 60),
+                    color: Theme.of(context).colorScheme.mainColor, fontSize: 36),
               ),
               const SizedBox(
                 height: 60,
@@ -65,7 +65,7 @@ class _CoverScreenState extends State<CoverScreen> {
                     MessageKeys.playButtonTitleKey.tr,
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         color: Theme.of(context).colorScheme.mainColor,
-                        fontSize: 46),
+                        fontSize: 30),
                   )),
               const SizedBox(
                 height: 30,
@@ -76,7 +76,7 @@ class _CoverScreenState extends State<CoverScreen> {
                   MessageKeys.settingsButtonTitleKey.tr,
                   style: Theme.of(context).textTheme.bodyText1?.copyWith(
                       color: Theme.of(context).colorScheme.mainColor,
-                      fontSize: 46),
+                      fontSize: 30),
                 ),
               ),
               const SizedBox(
@@ -91,6 +91,7 @@ class _CoverScreenState extends State<CoverScreen> {
                     child: Icon(
                       Icons.share,
                       color: Theme.of(context).primaryColor,
+                      size: 30,
                     ),
                   ),
                 ],

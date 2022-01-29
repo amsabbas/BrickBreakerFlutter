@@ -1,4 +1,4 @@
 class AssetResource {
-  static const String appFontName = "Debug";
-  static const String appFontPath = "assets/fonts/debug.otf";
+  static const String appFontName = "Dilo";
+  static const String appFontPath = "assets/fonts/dilo.ttf";
 }
