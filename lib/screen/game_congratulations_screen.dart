@@ -31,7 +31,7 @@ class GameCongratulationsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 isGameEnded
-                    ? TextButton(
+                    ? Container() : TextButton(
                         onPressed: () {
                           Get.back(result: true);
                         },
@@ -45,8 +45,7 @@ class GameCongratulationsScreen extends StatelessWidget {
                                       Theme.of(context).colorScheme.mainColor,
                                   fontSize: 30),
                         ),
-                      )
-                    : Container(),
+                      ),
                 TextButton(
                   onPressed: () {
                     Get.back();

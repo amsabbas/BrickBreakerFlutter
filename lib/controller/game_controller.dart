@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:brick_breaker_game/base/utils/constants.dart';
 import 'package:brick_breaker_game/base/utils/shared_preference.dart';
+import 'package:brick_breaker_game/model/brick_broken_type.dart';
 import 'package:brick_breaker_game/model/direction.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -16,7 +17,6 @@ class GameController extends GetxController {
 
   int _refreshDurationInMilliseconds = 8;
   bool _isGameStarted = false;
-  bool isGameEnded = false;
 
   RxInt level = 1.obs;
   RxInt currentLevel = 1.obs;
@@ -32,7 +32,7 @@ class GameController extends GetxController {
   late double _wallGap;
   late int _brickBrokenHits;
   RxBool brickBroken = false.obs;
-  RxBool allBricksBroken = false.obs;
+  Rx<BrickBrokenType> allBricksBroken = BrickBrokenType.notBroken.obs;
   RxList bricks = [].obs;
 
   RxList balls = [].obs;
@@ -66,16 +66,16 @@ class GameController extends GetxController {
   }
 
   void updateLevel() {
-    if (currentLevel <= Constants.levels) {
+    if (currentLevel.value < Constants.levels) {
       currentLevel.value++;
       int savedLevel = sharedPrefs.getInt("level") ?? 1;
       if (currentLevel.value > savedLevel) {
         sharedPrefs.putInt("level", currentLevel.value);
         level.value = currentLevel.value;
       }
-      isGameEnded = false;
+      allBricksBroken.value = BrickBrokenType.allBroken;
     } else {
-      isGameEnded = true;
+      allBricksBroken.value = BrickBrokenType.allBrokenAndGameEnded;
     }
   }
 
@@ -162,12 +162,11 @@ class GameController extends GetxController {
 
   void resetGame() {
     _initBricks();
-
     _isGameStarted = false;
     playerX.value.value = (-0.2);
     playerShown.value = true;
     playerDead.value = false;
-    allBricksBroken.value = false;
+    allBricksBroken.value = BrickBrokenType.notBroken;
 
     balls.clear();
     _initBalls();
@@ -277,12 +276,11 @@ class GameController extends GetxController {
       }
     }
     if (allBroken) {
-      playerShown.value = false;
+      updateLevel();
       balls.clear();
       balls.refresh();
-      allBricksBroken.value = true;
       timer.cancel();
-      updateLevel();
+      playerShown.value = false;
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:brick_breaker_game/base/language/language.dart';
 import 'package:brick_breaker_game/controller/audio_controller.dart';
 import 'package:brick_breaker_game/controller/game_controller.dart';
+import 'package:brick_breaker_game/model/brick_broken_type.dart';
 import 'package:brick_breaker_game/widget/award.dart';
 import 'package:collection/collection.dart';
 import 'package:get/get.dart';
@@ -46,7 +47,7 @@ class _GameScreenState extends State<GameScreen> {
     _gameOverWorker = ever(_gameController.playerDead, (bool playerDead) {
       if (playerDead) {
         _audioController.playGameOverAudio();
-        showGameOverScreen();
+        _showGameOverScreen();
       }
     });
 
@@ -63,35 +64,44 @@ class _GameScreenState extends State<GameScreen> {
     });
 
     _congratulationsWorker =
-        ever(_gameController.allBricksBroken, (bool broken) {
-      if (broken) {
-        _audioController.playMissionSuccessAudio();
-        showCongratulationsScreen();
+        ever(_gameController.allBricksBroken, (BrickBrokenType brokenType) {
+      switch (brokenType) {
+        case BrickBrokenType.allBrokenAndGameEnded:
+          _audioController.playMissionSuccessAudio();
+          _showCongratulationsScreen(true);
+          break;
+
+        case BrickBrokenType.allBroken:
+          _audioController.playMissionSuccessAudio();
+          _showCongratulationsScreen(false);
+          break;
+        case BrickBrokenType.notBroken:
+          break;
       }
     });
   }
 
-  void showCongratulationsScreen() async {
+  void _showCongratulationsScreen(bool isGameEnded) async {
     if (Get.currentRoute == "/GameScreen") {
       // dispose worker take some time
       final data = await Get.dialog(
           GameCongratulationsScreen(
-            isGameEnded: _gameController.isGameEnded,
+            isGameEnded: isGameEnded,
           ),
           barrierDismissible: false,
-          barrierColor: Colors.black.withOpacity(0.04));
+          barrierColor: Colors.black.withOpacity(0.5));
       if (data != null && data) {
         _gameController.resetGame();
       }
     }
   }
 
-  void showGameOverScreen() async {
+  void _showGameOverScreen() async {
     if (Get.currentRoute == "/GameScreen") {
       // dispose worker take some time
       final data = await Get.dialog(const GameOverScreen(),
           barrierDismissible: false,
-          barrierColor: Colors.black.withOpacity(0.04));
+          barrierColor: Colors.black.withOpacity(0.5));
       if (data != null && data) {
         _gameController.resetGame();
       }
