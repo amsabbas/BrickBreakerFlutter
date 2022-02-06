@@ -28,7 +28,7 @@ class Award extends StatelessWidget {
               child: Center(
                   child: Icon(
                 icon,
-                color: Theme.of(context).colorScheme.mainColor,
+                color: Theme.of(context).colorScheme.gameColor,
               )),
             ),
           )

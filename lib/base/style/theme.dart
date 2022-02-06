@@ -7,19 +7,19 @@ import 'colors.dart';
 class CustomTheme {
   static ThemeData get lightTheme {
     return ThemeData(
-      primaryColor: AppColors.blueLight,
+      primaryColor: AppColors.blueColor,
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           onPrimary: Colors.white,
-          primary: AppColors.blueLight,
+          primary: AppColors.blueColor,
         ),
       ),
       textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-        primary: AppColors.blueLight,
+        primary: AppColors.blueColor,
       )),
-      appBarTheme: const AppBarTheme(
-          systemOverlayStyle: SystemUiOverlayStyle(
+      appBarTheme: AppBarTheme(
+          systemOverlayStyle: const SystemUiOverlayStyle(
             // Status bar color
             statusBarColor: AppColors.whiteColor,
             // Status bar brightness
@@ -28,16 +28,8 @@ class CustomTheme {
             statusBarBrightness: Brightness.dark, // For iOS (dark icons)
           ),
           backgroundColor: Colors.white,
-          foregroundColor: AppColors.blueLight,
+          foregroundColor: AppColors.blueColor,
           centerTitle: true),
-      inputDecorationTheme: const InputDecorationTheme(
-        errorStyle: TextStyle(
-            color: AppColors.redColor, fontFamily: AssetResource.appFontName),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 2)),
-        border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.green, width: 0.0)),
-      ),
       textTheme: const TextTheme(
         bodyText1: TextStyle(fontFamily: AssetResource.appFontName),
         bodyText2: TextStyle(fontFamily: AssetResource.appFontName),
@@ -71,7 +63,7 @@ class CustomTheme {
       appBarTheme: AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle(
             // Status bar color
-            statusBarColor: AppColors.darkStatusBarColor,
+            statusBarColor: AppColors.blackColor,
             // Status bar brightness
             statusBarIconBrightness: Brightness.light,
             // For Android (dark icons)
@@ -79,14 +71,6 @@ class CustomTheme {
           ),
           foregroundColor: AppColors.brownColor,
           centerTitle: true),
-      inputDecorationTheme: const InputDecorationTheme(
-        errorStyle: TextStyle(
-            color: AppColors.redColor, fontFamily: AssetResource.appFontName),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.brownColor, width: 2)),
-        border: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.brownColor, width: 0.0)),
-      ),
       textTheme: const TextTheme(
         bodyText1: TextStyle(fontFamily: AssetResource.appFontName),
         bodyText2: TextStyle(fontFamily: AssetResource.appFontName),

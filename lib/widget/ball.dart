@@ -1,5 +1,6 @@
 import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 
 class Ball extends StatelessWidget {
   final double ballX;
@@ -20,12 +21,15 @@ class Ball extends StatelessWidget {
     return ballShown
         ? Container(
             alignment: Alignment(ballX, ballY),
-            child: Container(
-              width: ballWidth,
-              height: ballHeight,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.mainColor,
-                  shape: BoxShape.circle),
+            child: AvatarGlow(
+              endRadius: 15.0,
+              child: Container(
+                width: ballWidth,
+                height: ballHeight,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.gameColor,
+                    shape: BoxShape.circle),
+              ),
             ),
           )
         : Container();

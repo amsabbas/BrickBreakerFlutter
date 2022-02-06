@@ -8,6 +8,7 @@ import 'package:brick_breaker_game/base/utils/constants.dart';
 import 'package:brick_breaker_game/base/widget/empty_app_bar.dart';
 import 'package:brick_breaker_game/controller/audio_controller.dart';
 import 'package:brick_breaker_game/screen/settings_screen.dart';
+import '../base/widget/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
@@ -46,56 +47,63 @@ class _CoverScreenState extends State<CoverScreen> {
           color: Theme.of(context).cardColor,
           width: double.infinity,
           height: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
             children: [
-
-              Text(
-                MessageKeys.brickBreakerTitleKey.tr,
-                style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    color: Theme.of(context).colorScheme.mainColor, fontSize: 36),
+              const Bubbles(
+                numberOfBubbles: 40,
+                maxBubbleSize: 6.0,
               ),
-              const SizedBox(
-                height: 60,
-              ),
-
-              GestureDetector(
-                  onTap: _startGame,
-                  child: Text(
-                    MessageKeys.playButtonTitleKey.tr,
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        color: Theme.of(context).colorScheme.mainColor,
-                        fontSize: 30),
-                  )),
-              const SizedBox(
-                height: 30,
-              ),
-              GestureDetector(
-                onTap: _openSettings,
-                child: Text(
-                  MessageKeys.settingsButtonTitleKey.tr,
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                      color: Theme.of(context).colorScheme.mainColor,
-                      fontSize: 30),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Text(
+                    MessageKeys.brickBreakerTitleKey.tr,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: Theme.of(context).colorScheme.primaryMainColor,
+                        fontSize: 36),
+                  ),
+                  const SizedBox(
+                    height: 60,
+                  ),
                   GestureDetector(
-                    onTap: _share,
-                    child: Icon(
-                      Icons.share,
-                      color: Theme.of(context).primaryColor,
-                      size: 30,
+                      onTap: _startGame,
+                      child: Text(
+                        MessageKeys.playButtonTitleKey.tr,
+                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                            color: Theme.of(context).colorScheme.primaryMainColor,
+                            fontSize: 30),
+                      )),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  GestureDetector(
+                    onTap: _openSettings,
+                    child: Text(
+                      MessageKeys.settingsButtonTitleKey.tr,
+                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                          color: Theme.of(context).colorScheme.primaryMainColor,
+                          fontSize: 30),
                     ),
                   ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: _share,
+                        child: Icon(
+                          Icons.share,
+                          color: Theme.of(context).primaryColor,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  )
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -145,7 +153,8 @@ class _CoverScreenState extends State<CoverScreen> {
           },
           ignoreNativeDialog: Platform.isAndroid,
           // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
-          dialogStyle: const DialogStyle(),
+          dialogStyle: const DialogStyle(
+              titleStyle: TextStyle(fontFamily: ''), messageStyle: TextStyle(fontFamily: ''),),
           // Custom dialog styles.
           onDismissed: () => rateMyApp.callEvent(RateMyAppEventType
               .laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).

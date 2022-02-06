@@ -51,11 +51,15 @@ class GameController extends GetxController {
   RxBool awardShown = false.obs;
   int brickAwardTime = 0;
 
+  late List<Color> mainColor, mainColorLight;
+
   void loadLevel() {
     level.value = (sharedPrefs.getInt("level") ?? 1);
   }
 
-  void initLevel(int level) {
+  void initLevel(int level, List<Color> mColor, List<Color> mColorLight) {
+    mainColor = mColor;
+    mainColorLight = mColorLight;
     currentLevel.value = level;
     if (currentLevel > 10) {
       _refreshDurationInMilliseconds = 7;
@@ -122,7 +126,9 @@ class GameController extends GetxController {
           bricks.add([
             _firstBrickX + i * (brickWidth + _brickGapWidth),
             _firstBrickY + j * (brickHeight + _brickGapHeight),
-            _brickBrokenHits
+            _brickBrokenHits,
+            mainColor[i],
+            mainColorLight[i],
           ]);
         }
       }
@@ -307,8 +313,9 @@ class GameController extends GetxController {
   void _updateDirection() {
     for (int i = 0; i < balls.length; i++) {
       if (balls[i][1] >= 0.9 &&
-          balls[i][0] >= playerX.value.value &&
-          balls[i][0] <= playerX.value.value + playerWidth) {
+          balls[i][0] + 0.06 >= playerX.value.value &&
+          balls[i][0] - 0.06 <= playerX.value.value + playerWidth) {
+        //0.06 width of balls
         balls[i][4] = Direction.up;
       } else if (balls[i][1] <= -1) {
         balls[i][4] = Direction.down;

@@ -22,7 +22,7 @@ class GameCongratulationsScreen extends StatelessWidget {
             Text(
               MessageKeys.congratulationTitleKey.tr,
               style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                  color: Theme.of(context).colorScheme.mainColor, fontSize: 46),
+                  color: Theme.of(context).colorScheme.primaryMainColor, fontSize: 46),
             ),
             const SizedBox(
               height: 30,
@@ -42,7 +42,7 @@ class GameCongratulationsScreen extends StatelessWidget {
                               .bodyText1
                               ?.copyWith(
                                   color:
-                                      Theme.of(context).colorScheme.mainColor,
+                                      Theme.of(context).colorScheme.primaryMainColor,
                                   fontSize: 30),
                         ),
                       ),
@@ -54,7 +54,7 @@ class GameCongratulationsScreen extends StatelessWidget {
                   child: Text(
                     MessageKeys.backButtonTitleKey.tr,
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        color: Theme.of(context).colorScheme.mainColor,
+                        color: Theme.of(context).colorScheme.primaryMainColor,
                         fontSize: 30),
                   ),
                 ),

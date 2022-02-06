@@ -44,7 +44,7 @@ class Language extends Translations {
           MessageKeys.offButtonTitleKey: 'OFF',
           MessageKeys.downloadNowTitleKey: 'Download Now',
           MessageKeys.rateTitleKey: 'Rate this app',
-          MessageKeys.rateMaybeButtonTitleKey: 'MAYBE LATER',
+          MessageKeys.rateMaybeButtonTitleKey: 'LATER',
           MessageKeys.rateDescKey:
               'If you like this game, please take a little bit of your time to review it !\nIt really helps us and it should not take you more than one minute.',
           MessageKeys.rateButtonTitleKey: 'RATE',
@@ -67,7 +67,7 @@ class Language extends Translations {
           MessageKeys.offButtonTitleKey: 'OFF',
           MessageKeys.downloadNowTitleKey: 'Download Now',
           MessageKeys.rateTitleKey: 'Rate this app',
-          MessageKeys.rateMaybeButtonTitleKey: 'MAYBE LATER',
+          MessageKeys.rateMaybeButtonTitleKey: 'LATER',
           MessageKeys.rateDescKey:
           'If you like this game, please take a little bit of your time to review it !\nIt really helps us and it should not take you more than one minute.',
           MessageKeys.rateButtonTitleKey: 'RATE',

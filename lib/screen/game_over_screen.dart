@@ -19,7 +19,7 @@ class GameOverScreen extends StatelessWidget {
             Text(
               MessageKeys.gameOverTitleKey.tr,
               style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                  color: Theme.of(context).colorScheme.mainColor, fontSize: 46),
+                  color: Theme.of(context).colorScheme.primaryMainColor, fontSize: 46),
             ),
             const SizedBox(
               height: 30,
@@ -34,7 +34,7 @@ class GameOverScreen extends StatelessWidget {
                   child: Text(
                     MessageKeys.playAgainButtonTitleKey.tr,
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        color: Theme.of(context).colorScheme.mainColor,
+                        color: Theme.of(context).colorScheme.primaryMainColor,
                         fontSize: 30),
                   ),
                 ),
@@ -46,7 +46,7 @@ class GameOverScreen extends StatelessWidget {
                   child: Text(
                     MessageKeys.backButtonTitleKey.tr,
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        color: Theme.of(context).colorScheme.mainColor,
+                        color: Theme.of(context).colorScheme.primaryMainColor,
                         fontSize: 30),
                   ),
                 ),

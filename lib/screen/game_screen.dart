@@ -1,5 +1,7 @@
 import 'package:brick_breaker_game/base/injection/general_injection.dart';
 import 'package:brick_breaker_game/base/language/language.dart';
+import 'package:brick_breaker_game/base/style/color_extension.dart';
+import 'package:brick_breaker_game/base/widget/bubble.dart';
 import 'package:brick_breaker_game/controller/audio_controller.dart';
 import 'package:brick_breaker_game/controller/game_controller.dart';
 import 'package:brick_breaker_game/model/brick_broken_type.dart';
@@ -41,8 +43,24 @@ class _GameScreenState extends State<GameScreen> {
     _gameController = Get.put(getIt<GameController>());
     _audioController = Get.put(getIt<AudioController>());
 
-    WidgetsBinding.instance
-        ?.addPostFrameCallback((_) => _gameController.initLevel(widget.level));
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      ThemeData themeData = Theme.of(context);
+      List<Color> mainColor = [
+        themeData.colorScheme.firstBrickColor,
+        themeData.colorScheme.secondBrickColor,
+        themeData.colorScheme.thirdBrickColor,
+        themeData.colorScheme.firstBrickColor,
+        themeData.colorScheme.thirdBrickColor,
+      ];
+      List<Color> mainColorLight = [
+        themeData.colorScheme.firstBrickLightColor,
+        themeData.colorScheme.secondBrickLightColor,
+        themeData.colorScheme.thirdBrickLightColor,
+        themeData.colorScheme.firstBrickLightColor,
+        themeData.colorScheme.thirdBrickLightColor,
+      ];
+      _gameController.initLevel(widget.level, mainColor, mainColorLight);
+    });
 
     _gameOverWorker = ever(_gameController.playerDead, (bool playerDead) {
       if (playerDead) {
@@ -118,7 +136,7 @@ class _GameScreenState extends State<GameScreen> {
       },
       child: Scaffold(
         body: Container(
-          color: Theme.of(context).cardColor,
+          color: Theme.of(context).colorScheme.bubbleBackgroundColor,
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onHorizontalDragUpdate: (details) {
@@ -138,6 +156,10 @@ class _GameScreenState extends State<GameScreen> {
                   return Column(
                     children: [
                       AppBar(
+                        foregroundColor:
+                            Theme.of(context).colorScheme.gameColor,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.bubbleBackgroundColor,
                         elevation: 1,
                         title: Obx(() => Text(MessageKeys.levelTitleKey.tr +
                             _gameController.currentLevel.value.toString())),
@@ -145,6 +167,10 @@ class _GameScreenState extends State<GameScreen> {
                       Expanded(
                         child: Stack(
                           children: [
+                            const Bubbles(
+                              numberOfBubbles: 10,
+                              maxBubbleSize: 2.0,
+                            ),
                             Award(
                               awardX: _gameController.awardX.value,
                               awardY: _gameController.awardY.value,
@@ -182,6 +208,10 @@ class _GameScreenState extends State<GameScreen> {
                                               _gameController.brickHeight,
                                           brickBrokenHits:
                                               _gameController.bricks[i][2],
+                                          mainColor: _gameController.bricks[i]
+                                              [3],
+                                          mainColorLight:
+                                              _gameController.bricks[i][4],
                                         ))
                                     .toList()),
                           ],

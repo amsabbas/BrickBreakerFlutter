@@ -9,7 +9,7 @@ class SettingsController extends GetxController {
 
   RxBool audioState = true.obs;
 
-  RxBool isDarkTheme = false.obs;
+  RxBool isDarkTheme = true.obs;
 
   SettingsController({required this.sharedPrefs});
 
@@ -29,7 +29,7 @@ class SettingsController extends GetxController {
   }
 
   bool isThemeDark() {
-    return sharedPrefs.getBool(Constants.darkModeKey) ?? false;
+    return sharedPrefs.getBool(Constants.darkModeKey) ?? true;
   }
 
   void saveDarkState(bool isDarkMode) {

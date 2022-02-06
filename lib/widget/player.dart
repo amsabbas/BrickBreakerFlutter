@@ -20,11 +20,11 @@ class Player extends StatelessWidget {
             alignment:
                 Alignment((2 * playerX + playerWidth) / (2 - playerWidth), 0.9),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(3),
               child: Container(
-                height: 15,
+                height: 10,
                 width: MediaQuery.of(context).size.width * playerWidth / 2,
-                color: Theme.of(context).colorScheme.mainColor,
+                color: Theme.of(context).colorScheme.gameColor,
               ),
             ),
           )

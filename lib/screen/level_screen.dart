@@ -3,6 +3,7 @@ import 'package:brick_breaker_game/base/language/language.dart';
 import 'package:brick_breaker_game/base/style/color_extension.dart';
 import 'package:brick_breaker_game/base/style/colors.dart';
 import 'package:brick_breaker_game/base/utils/constants.dart';
+import 'package:brick_breaker_game/base/widget/bubble.dart';
 import 'package:brick_breaker_game/base/widget/empty_app_bar.dart';
 import 'package:brick_breaker_game/controller/game_controller.dart';
 import 'package:brick_breaker_game/screen/game_screen.dart';
@@ -32,63 +33,74 @@ class _LevelScreenState extends State<LevelScreen> {
       appBar: EmptyAppBar(),
       body: Container(
         color: Theme.of(context).cardColor,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 30,
-              ),
-              Text(
-                MessageKeys.gameLevelTitleKey.tr,
-                style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                    color: Theme.of(context).colorScheme.mainColor,
-                    fontSize: 46),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Expanded(
-                  child: GetX<GameController>(
-                      init: _mainController, //here
-                      builder: (controller) {
-                        int level = _mainController.level.value;
-                        return GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3),
-                          itemBuilder: (_, index) => GestureDetector(
-                            onTap: () => startGame(index + 1, level),
-                            child: Card(
-                              shape: BeveledRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              elevation: 0,
-                              child: Container(
-                                color: (index + 1) <= level
-                                    ? Theme.of(context).colorScheme.mainColor
-                                    : AppColors.offWhiteColor,
-                                child: Center(
-                                  child: Text(
-                                    (index + 1).toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        ?.copyWith(
-                                            color: (index + 1) <= level
-                                                ? AppColors.whiteColor
-                                                : AppColors.greyLightColor,
-                                            fontSize: 60),
+        child: Stack(
+          children: [
+            const Bubbles(
+              numberOfBubbles: 40,
+              maxBubbleSize: 6.0,
+            ),
+            Column(
+              children: [
+                const SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  MessageKeys.gameLevelTitleKey.tr,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      color: Theme.of(context).colorScheme.primaryMainColor,
+                      fontSize: 46),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Expanded(
+                    child: GetX<GameController>(
+                        init: _mainController, //here
+                        builder: (controller) {
+                          int level = _mainController.level.value;
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24.0, vertical: 8),
+                            child: GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4),
+                              itemBuilder: (_, index) => GestureDetector(
+                                onTap: () => startGame(index + 1, level),
+                                child: Card(
+                                  shape: BeveledRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  elevation: 0,
+                                  child: Container(
+                                    color: (index + 1) <= level
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .primaryMainColor
+                                        : AppColors.offWhiteColor,
+                                    child: Center(
+                                      child: Text(
+                                        (index + 1).toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1
+                                            ?.copyWith(
+                                                color: (index + 1) <= level
+                                                    ? AppColors.whiteColor
+                                                    : AppColors.greyLightColor,
+                                                fontSize: 40),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
+                              itemCount: Constants.levels,
                             ),
-                          ),
-                          itemCount: Constants.levels,
-                        );
-                      })),
-            ],
-          ),
+                          );
+                        })),
+              ],
+            ),
+          ],
         ),
       ),
     );
