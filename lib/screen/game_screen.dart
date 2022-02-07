@@ -51,6 +51,8 @@ class _GameScreenState extends State<GameScreen> {
         themeData.colorScheme.thirdBrickColor,
         themeData.colorScheme.firstBrickColor,
         themeData.colorScheme.thirdBrickColor,
+        themeData.colorScheme.secondBrickColor,
+        themeData.colorScheme.firstBrickColor,
       ];
       List<Color> mainColorLight = [
         themeData.colorScheme.firstBrickLightColor,
@@ -58,6 +60,8 @@ class _GameScreenState extends State<GameScreen> {
         themeData.colorScheme.thirdBrickLightColor,
         themeData.colorScheme.firstBrickLightColor,
         themeData.colorScheme.thirdBrickLightColor,
+        themeData.colorScheme.secondBrickLightColor,
+        themeData.colorScheme.firstBrickLightColor,
       ];
       _gameController.initLevel(widget.level, mainColor, mainColorLight);
     });

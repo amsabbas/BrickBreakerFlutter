@@ -72,29 +72,10 @@ class _LevelScreenState extends State<LevelScreen> {
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   elevation: 0,
-                                  child: Container(
-                                    color: (index + 1) <= level
-                                        ? Theme.of(context)
-                                            .colorScheme
-                                            .primaryMainColor
-                                        : AppColors.offWhiteColor,
-                                    child: Center(
-                                      child: Text(
-                                        (index + 1).toString(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1
-                                            ?.copyWith(
-                                                color: (index + 1) <= level
-                                                    ? AppColors.whiteColor
-                                                    : AppColors.greyLightColor,
-                                                fontSize: 40),
-                                      ),
-                                    ),
-                                  ),
+                                  child: getCard(index, level),
                                 ),
                               ),
-                              itemCount: Constants.levels,
+                              itemCount: Constants.levels + 1,
                             ),
                           );
                         })),
@@ -106,8 +87,44 @@ class _LevelScreenState extends State<LevelScreen> {
     );
   }
 
+  Widget getCard(int index, int level) {
+    if (index == Constants.levels) {
+      return Container(
+        color: AppColors.offWhiteColor,
+        child: Center(
+          child: Text(
+            ("Soon...").toString(),
+            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                color: (index + 1) <= level
+                    ? AppColors.whiteColor
+                    : AppColors.greyLightColor,
+                fontSize: 20),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        color: (index + 1) <= level
+            ? Theme.of(context).colorScheme.primaryMainColor
+            : AppColors.offWhiteColor,
+        child: Center(
+          child: Text(
+            (index + 1).toString(),
+            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                color: (index + 1) <= level
+                    ? AppColors.whiteColor
+                    : AppColors.greyLightColor,
+                fontSize: 40),
+          ),
+        ),
+      );
+    }
+  }
+
   void startGame(int index, int level) {
-    if (index <= level) {
+    if (index == Constants.levels + 1) {
+      return;
+    } else if (index <= level) {
       Get.to(
         () => GameScreen(
           level: index,
